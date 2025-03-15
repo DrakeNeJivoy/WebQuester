@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание анкеты</title>
+    <script src="/js/create-survey.js" defer></script>
+</head>
+<body>
+<h1>Создание анкеты</h1>
+<form id="survey-form">
+    <label for="survey-title">Название анкеты:</label>
+    <input type="text" id="survey-title" name="title" required>
+
+    <h2>Вопросы</h2>
+    <div id="questions-container"></div>
+    <button type="button" id="add-question">Добавить вопрос</button>
+
+    <button type="submit">Создать анкету</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <style>
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .error { background-color: #ffcccc; color: #d8000c; }
+        .success { background-color: #ccffcc; color: #4f8a10; }
+    </style>
+</head>
+<body>
+<h2>Вход</h2>
+
+<div th:if="${errorMessage}" class="message error">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<div th:if="${successMessage}" class="message success">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<form action="/login" method="post">
+    <form id="loginForm" action="/login" method="post">
+        <form method="post" action="/login">
+            <label>Email:</label>
+            <input type="text" name="email" required>
+
+            <label>Пароль:</label>
+            <input type="password" name="password" required>
+
+            <button type="submit">Войти</button>
+        </form>
+
+    </form>
+
+    <div id="message"></div> <!-- Сюда будем выводить сообщение -->
+</form>
+
+
+<p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
+</body>
+</html>
