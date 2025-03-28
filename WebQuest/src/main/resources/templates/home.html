@@ -10,7 +10,9 @@
 <a href="/home-create-survey">
     <button>Создать анкету</button>
 </a>
-<a href="/profile">Перейти в профиль</a>
+<a href="/profile">
+    <button>Перейти в профиль</button>
+</a>
 <h1>Все анкеты</h1>
 
 <!-- Проверка: выводим сообщение, если анкеты отсутствуют -->
@@ -22,7 +24,12 @@
     <ul>
         <!-- Перебираем анкеты и выводим их -->
         <th:block th:each="survey : ${surveys}">
-            <li th:text="${survey.title}">Название анкеты</li>
+            <li>
+                <span th:text="${survey.title}">Название анкеты</span>
+                <a th:href="@{'/survey/' + ${survey.id}}">
+                    <button>Пройти анкету</button>
+                </a>
+            </li>
         </th:block>
     </ul>
 </div>

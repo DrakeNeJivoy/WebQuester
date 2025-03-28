@@ -16,6 +16,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Long getId() { return id; }
+
     private String text; // Текст вопроса
 
     public String getText() { return text; }
@@ -27,6 +29,16 @@ public class Question {
 
     public Survey getSurvey() { return survey; }
     public void setSurvey(Survey survey) { this.survey = survey; }
+
+//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<AnswerOption> answerOptions;
+
+    // Геттер для ответов
+//    public List<AnswerOption> getAnswerOptions() {
+//        return answerOptions;
+//    }
+
+
 
 //    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<AnswerOption> answerOptions;

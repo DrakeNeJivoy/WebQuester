@@ -42,4 +42,13 @@ public class QuestionService {
             throw new RuntimeException("Анкета не найдена!");
         }
     }
+
+    // Новый метод для получения списка вопросов по ID анкеты
+    public List<Question> getQuestionsBySurveyId(Long surveyId) {
+        return questionRepository.findBySurveyId(surveyId);
+    }
+
+    public List<AnswerOption> getAnswerOptionsByQuestionId(Long questionId) {
+        return answerOptionRepository.findByQuestionId(questionId);
+    }
 }

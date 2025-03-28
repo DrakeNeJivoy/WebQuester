@@ -1,0 +1,12 @@
+<h1 th:text="${survey.title}">Название анкеты</h1>
+
+<ul>
+    <li th:each="question : ${questions}">
+        <p th:text="${question.text}"></p>
+        <ul>
+            <li th:each="answer : ${questionAnswerOptions[question.id]}">
+                <span th:text="${answer.text}"></span>
+            </li>
+        </ul>
+    </li>
+</ul>

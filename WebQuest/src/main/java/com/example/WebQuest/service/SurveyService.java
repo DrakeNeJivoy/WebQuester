@@ -31,6 +31,11 @@ public class SurveyService {
         this.userRepository = userRepository;
     }
 
+    public Survey getSurveyById(Long id) {
+        return surveyRepository.findById(id).orElse(null);
+    }
+
+
     @Transactional
     public Survey createSurvey(SurveyRequest surveyRequest, String email) {
         User user = userRepository.findByEmail(email)
