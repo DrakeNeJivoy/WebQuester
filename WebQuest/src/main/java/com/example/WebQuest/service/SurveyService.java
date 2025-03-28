@@ -21,14 +21,15 @@ public class SurveyService {
     private final AnswerOptionRepository answerOptionRepository;
     private final UserRepository userRepository; // Добавляем объявление
 
-    public SurveyService(SurveyRepository surveyRepository, QuestionRepository questionRepository,
-                         AnswerOptionRepository answerOptionRepository, UserRepository userRepository) {
+    public SurveyService(SurveyRepository surveyRepository,
+                         QuestionRepository questionRepository,
+                         AnswerOptionRepository answerOptionRepository,
+                         UserRepository userRepository) {
         this.surveyRepository = surveyRepository;
         this.questionRepository = questionRepository;
         this.answerOptionRepository = answerOptionRepository;
         this.userRepository = userRepository;
     }
-
 
     @Transactional
     public Survey createSurvey(SurveyRequest surveyRequest, String email) {
@@ -56,4 +57,12 @@ public class SurveyService {
 
         return survey;
     }
+
+    @Transactional
+    public List<Survey> getAllSurveys() {
+        List<Survey> surveys = surveyRepository.findAll();
+        System.out.println("Список анкет: " + surveys);  // Логируем анкеты
+        return surveys;
+    }
+
 }
