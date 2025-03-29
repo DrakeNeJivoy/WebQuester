@@ -3,36 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная</title>
+    <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-<h1>Добро пожаловать!</h1>
-<p>Вы успешно вошли в систему.</p>
-<a href="/home-create-survey">
-    <button>Создать анкету</button>
-</a>
-<a href="/profile">
-    <button>Перейти в профиль</button>
-</a>
-<h1>Все анкеты</h1>
+<header>
+    <h1>Добро пожаловать!</h1>
+    <a href="/logout" class="logout-btn">Выйти</a>
+</header>
 
-<!-- Проверка: выводим сообщение, если анкеты отсутствуют -->
-<div th:if="${#lists.isEmpty(surveys)}">
-    <p>Анкеты отсутствуют.</p>
+<div class="container">
+    <div class="action-buttons">
+        <a href="/home-create-survey">
+            <button>Создать анкету</button>
+        </a>
+        <a href="/profile">
+            <button>Профиль</button>
+        </a>
+    </div>
+
+    <div class="survey-section">
+        <h2>Все анкеты</h2>
+
+        <div th:if="${#lists.isEmpty(surveys)}">
+            <p>Анкеты отсутствуют.</p>
+        </div>
+
+        <div class="survey-list">
+            <th:block th:each="survey : ${surveys}">
+                <div class="survey-item">
+                    <span th:text="${survey.title}">Название анкеты</span>
+                    <a th:href="@{'/survey/' + ${survey.id}}">
+                        <button>Пройти</button>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+    </div>
 </div>
-<!-- Выводим список всех анкет -->
-<div>
-    <ul>
-        <!-- Перебираем анкеты и выводим их -->
-        <th:block th:each="survey : ${surveys}">
-            <li>
-                <span th:text="${survey.title}">Название анкеты</span>
-                <a th:href="@{'/survey/' + ${survey.id}}">
-                    <button>Пройти анкету</button>
-                </a>
-            </li>
-        </th:block>
-    </ul>
-</div>
-<a href="/logout">Выйти</a>
+
+<footer>
+    ИСУ-23
+</footer>
 </body>
 </html>
