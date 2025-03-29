@@ -38,6 +38,7 @@ header h1 {
 .container {
     text-align: center;
     margin-top: 30px;
+    padding: 0 20px; /* Добавляем отступы для адаптивности */
 }
 
 .action-buttons {
@@ -76,17 +77,20 @@ header h1 {
     align-items: center;
     gap: 15px;
     margin-top: 20px;
+    width: 100%; /* Занимает всю ширину контейнера */
 }
 
 .survey-item {
     background-color: #49a9f8;
     color: white;
-    width: 60%;
+    width: 90%; /* Адаптивная ширина */
+    max-width: 600px; /* Максимальная ширина, чтобы не растягивался на больших экранах */
     padding: 20px;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box; /* Учитывает padding и border в ширине */
 }
 
 .survey-item a button {
@@ -111,4 +115,28 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .action-buttons a button {
+        width: 150px;
+        height: 120px;
+        padding: 20px 30px;
+        font-size: 16px;
+    }
+
+    .survey-item {
+        width: 95%; /* Увеличиваем ширину на маленьких экранах */
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .survey-item span {
+        margin-bottom: 10px;
+    }
+
+    .survey-item a button {
+        width: 100%;
+    }
 }
