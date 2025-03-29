@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Главная страница</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
+
 <body>
-    <h1>Добро пожаловать!</h1>
+    <header>
+        <h1>Панель управления</h1>
+        <a class="logout-btn" th:href="@{/logout}">Выйти</a>
+    </header>
 
-    <div>
-        <a th:href="@{/logout}">Выйти</a>
-        <button onclick="location.href='/create'">Создать анкету</button>
-        <button onclick="location.href='/profile'">Профиль</button>
+    <div class="container">
+        <div class="action-buttons">
+            <a th:href="@{/create}">
+                <button>Создать анкету</button>
+            </a>
+            <a th:href="@{/profile}">
+                <button>Профиль</button>
+            </a>
+        </div>
+
+        <div class="survey-section">
+            <h2>Список анкет</h2>
+            <div class="survey-list" th:each="survey : ${surveys}">
+                <div class="survey-item">
+                    <span th:text="${survey.title}">Название анкеты</span>
+                    <a th:href="@{'/survey/' + ${survey.id}}">
+                        <button>Пройти</button>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <h2>Все анкеты</h2>
-
-    <div th:if="${surveys.isEmpty()}">
-        Анкеты отсутствуют.
-    </div>
-
-    <div th:each="survey : ${surveys}">
-        <p>Название анкеты: <span th:text="${survey.title}"></span>
-            <button th:onclick="'location.href=\'/survey/' + ${survey.id} + '/pass\''">Пройти</button>
-        </p>
-    </div>
+    <footer>
+        Ису-23
+    </footer>
 </body>
+
 </html>
