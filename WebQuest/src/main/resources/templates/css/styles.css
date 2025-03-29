@@ -1,0 +1,236 @@
+/* --- Сброс стилей и общие настройки --- */
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #F5F7FA; /* Мягкий светло-серый фон */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- Единый стиль хедера --- */
+header {
+    width: 100%;
+    height: 80px;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #4DA8DA !important; /* Мягкий голубой вместо primary */
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    position: fixed;
+}
+
+/* --- Футер --- */
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #4DA8DA !important; /* Мягкий голубой */
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 16px;
+}
+
+/* --- Центрирование формы логина/регистрации --- */
+.auth-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-box {
+    background-color: #4DA8DA; /* Мягкий голубой */
+    padding: 50px;
+    border-radius: 12px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Мягче тень */
+}
+
+/* --- Поля ввода с Bootstrap-стилями --- */
+.auth-box .form-control {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: 1px solid #ced4da; /* Стандартная граница Bootstrap */
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: white;
+    color: #333;
+}
+
+/* --- Кнопки с Bootstrap-стилями --- */
+.auth-box .btn {
+    width: 100%;
+    background-color: #28A745 !important; /* Зеленый акцент вместо danger */
+    color: white;
+    padding: 12px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+.auth-box .btn:hover {
+    background-color: #218838 !important; /* Темнее зеленый */
+}
+
+/* --- Бургер-кнопка --- */
+.burger-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 1001;
+}
+
+.burger-icon {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    transition: 0.3s ease-in-out;
+}
+
+/* --- Анимация бургера --- */
+.burger-btn.active .burger-icon:nth-child(1) {
+    transform: translateY(10px) rotate(90deg);
+}
+
+.burger-btn.active .burger-icon:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-btn.active .burger-icon:nth-child(3) {
+    transform: translateY(-10px) rotate(-90deg);
+}
+
+/* --- Меню --- */
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #4DA8DA; /* Мягкий голубой */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-100%);
+    transition: transform 0.4s ease-in-out;
+    z-index: 1000;
+}
+
+.menu-visible {
+    transform: translateY(0);
+}
+
+/* --- Список меню --- */
+#menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+#menu ul li {
+    padding: 25px 0;
+}
+
+#menu ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    display: block;
+}
+
+/* --- Заголовок "Выберите анкету" --- */
+.survey-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333; /* Темно-серый */
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* --- Блоки анкет --- */
+.survey-box {
+    width: 100%;
+    max-width: 350px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    text-decoration: none;
+    color: white;
+    background-color: #4DA8DA; /* Мягкий голубой */
+    border-radius: 12px;
+    margin-bottom: 25px;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.survey-box:hover {
+    transform: scale(1.07);
+    background-color: #3998C7; /* Более мягкий оттенок */
+}
+
+/* --- Иконки --- */
+.icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+    filter: brightness(0) invert(1); /* Белые иконки */
+}
+
+/* --- Центрирование формы --- */
+.form-container {
+    width: 400px;
+    padding: 35px;
+    border-radius: 12px;
+    background-color: #4DA8DA; /* Мягкий голубой */
+}
+
+.form-container .form-control {
+    font-size: 18px;
+    padding: 12px;
+    background-color: white;
+    color: #333;
+}
+
+.form-container .btn {
+    font-size: 20px;
+    padding: 14px;
+    background-color: #28A745 !important; /* Зеленый акцент */
+}
+
+.form-container .btn:hover {
+    background-color: #218838 !important; /* Темнее зеленый */
+}
+
+.form-container h3 {
+    font-size: 24px;
+    color: white;
+}
+
+/* Стили для профиля */
+.profile-info {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.profile-info strong {
+    font-weight: bold;
+    margin-right: 5px;
+}
