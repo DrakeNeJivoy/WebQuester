@@ -36,9 +36,25 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <footer>
         Ису-23
     </footer>
+=======
+    <h2>Все анкеты</h2>
+
+    <div th:if="${surveys.isEmpty()}">
+        Анкеты отсутствуют.
+    </div>
+
+    <div th:each="survey : ${surveys}">
+        <p>Название анкеты: <span th:text="${survey.title}"></span>
+            <a th:href="@{'/survey/' + ${survey.id}}">
+                <button>Пройти</button>
+            </a>
+        </p>
+    </div>
+>>>>>>> d3aede94aeeb12cdb315f85a51eec8955d53523b
 </body>
 
 </html>
