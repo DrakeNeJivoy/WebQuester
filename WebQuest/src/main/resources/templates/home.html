@@ -22,7 +22,9 @@
 
     <div th:each="survey : ${surveys}">
         <p>Название анкеты: <span th:text="${survey.title}"></span>
-            <button th:onclick="'location.href=\'/survey/' + ${survey.id} + '/pass\''">Пройти</button>
+            <a th:href="@{'/survey/' + ${survey.id}}">
+                <button>Пройти</button>
+            </a>
         </p>
     </div>
 </body>
