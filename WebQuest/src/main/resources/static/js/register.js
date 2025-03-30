@@ -1,6 +1,7 @@
 Vue.createApp({
     data() {
         return {
+            username: "",
             email: "",
             password: "",
             message: "",
@@ -8,29 +9,29 @@ Vue.createApp({
         };
     },
     methods: {
-        async submitLogin() {
+        async submitRegister() {
             try {
-                const response = await fetch('/login', {
+                const response = await fetch('/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
+                        username: this.username,
                         email: this.email,
                         password: this.password
                     })
                 });
                 const result = await response.json();
                 if (result.success) {
-                    this.message = result.message || 'Успешный вход!';
+                    this.message = result.message || 'Успешная регистрация!';
                     this.messageType = 'success';
                     // Очищаем форму
+                    this.username = '';
                     this.email = '';
                     this.password = '';
-                    // Можно перенаправить пользователя, например:
-                    // window.location.href = '/dashboard';
                 } else {
-                    this.message = result.message || 'Ошибка входа';
+                    this.message = result.message || 'Ошибка регистрации';
                     this.messageType = 'error';
                 }
             } catch (error) {
@@ -38,9 +39,9 @@ Vue.createApp({
                 this.messageType = 'error';
             }
         },
-        showRegister() {
-            document.getElementById("loginApp").classList.add("d-none");
-            document.getElementById("registerApp").classList.remove("d-none");
+        showLogin() {
+            document.getElementById("registerApp").classList.add("d-none");
+            document.getElementById("loginApp").classList.remove("d-none");
         }
     }
-}).mount("#loginApp");
+}).mount("#registerApp");
