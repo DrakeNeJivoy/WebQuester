@@ -37,4 +37,23 @@ public class SurveyController {
         surveyService.deleteSurvey(id);
         return ResponseEntity.ok("Survey with ID: " + id + " deleted successfully");
     }
+
+    @GetMapping("/survey/{id}")
+    public ResponseEntity<Survey> getSurvey(@PathVariable Long id) {
+        Survey survey = surveyService.getSurveyWithQuestionsAndAnswers(id);
+        if (survey == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(survey);
+    }
+
+    @PutMapping("/survey/{id}")
+    public ResponseEntity<String> updateSurvey(@PathVariable Long id, @RequestBody SurveyRequest surveyRequest) {
+        try {
+            surveyService.updateSurvey(id, surveyRequest);
+            return ResponseEntity.ok("Survey updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating survey: " + e.getMessage());
+        }
+    }
 }

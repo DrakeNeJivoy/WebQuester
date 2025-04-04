@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактирование анкеты</title>
+</head>
+<body>
+<h1>Редактирование анкеты</h1>
+<form id="survey-form">
+  <label for="survey-title">Название анкеты:</label>
+  <input type="text" id="survey-title" name="title" th:value="${survey.title}" required>
+
+  <h2>Вопросы</h2>
+  <div id="questions-container">
+    <div th:each="question, questionStat : ${questions}" class="question">
+      <label th:for="'question-' + ${questionStat.count}">Вопрос:</label>
+      <input type="text" th:id="'question-' + ${questionStat.count}" th:name="'questions[' + ${questionStat.count} + '][text]'" th:value="${question.text}" required>
+
+      <label>
+        <input type="checkbox" class="has-correct-answer" th:data-question="${questionStat.count}"
+               th:checked="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}"> Есть правильный ответ
+      </label>
+
+      <div class="answers-container" th:id="'answers-' + ${questionStat.count}">
+        <div th:each="answerOption, answerOptionStat : ${questionAnswerOptions.get(question.id)}" class="answer">
+          <input type="text" th:name="'questions[' + ${questionStat.count} + '][answerOptions][]'" th:value="${answerOption.text}" required>
+          <input type="checkbox" class="correct-answer-checkbox" th:name="'questions[' + ${questionStat.count} + '][correct]'" value="2" th:checked="${answerOption.status == 2}"
+                 th:style="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0 ? 'display: inline-block;' : 'display: none;'}">
+        </div>
+        <button type="button" class="add-answer" th:data-question="${questionStat.count}">Добавить вариант ответа</button>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="add-question">Добавить вопрос</button>
+
+  <button type="submit">Сохранить изменения</button>
+</form>
+<script src="/js/survey-editor.js"></script>
+</body>
+</html>

@@ -80,4 +80,53 @@ public class SurveyService {
         questionRepository.deleteBySurveyId(id); // Удаляем вопросы
         surveyRepository.deleteById(id); // Удаляем анкету
     }
+
+    public Survey getSurveyWithQuestionsAndAnswers(Long id) {
+        Survey survey = surveyRepository.findById(id).orElse(null);
+        if (survey == null) {
+            return null;
+        }
+
+        List<Question> questions = questionRepository.findBySurveyId(id);
+
+        // Загружаем варианты ответов для каждого вопроса
+        for (Question question : questions) {
+            List<AnswerOption> answerOptions = answerOptionRepository.findByQuestionId(question.getId());
+            // Добавляем варианты ответов в вопрос
+            //question.setAnswerOptions(answerOptions);
+        }
+        //Возвращаем только анкету, вопросы и варианты ответов нужно получать отдельно
+        return survey;
+    }
+
+    // SurveyService.java
+    @Transactional
+    public void updateSurvey(Long id, SurveyRequest surveyRequest) {
+        Survey survey = surveyRepository.findById(id).orElseThrow(() -> new RuntimeException("Survey not found"));
+        survey.setTitle(surveyRequest.getTitle());
+        surveyRepository.save(survey);
+
+        // Удалить старые вопросы и ответы
+        List<Question> oldQuestions = questionRepository.findBySurveyId(id);
+        for(Question question : oldQuestions){
+            answerOptionRepository.deleteByQuestionId(question.getId());
+        }
+        questionRepository.deleteBySurveyId(id);
+
+        // Сохранить новые вопросы и ответы
+        for (QuestionRequest questionRequest : surveyRequest.getQuestions()) {
+            Question question = new Question();
+            question.setText(questionRequest.getText());
+            question.setSurvey(survey);
+            questionRepository.save(question);
+
+            for (AnswerOptionRequest answerOptionRequest : questionRequest.getAnswerOptions()) {
+                AnswerOption answerOption = new AnswerOption();
+                answerOption.setText(answerOptionRequest.getText());
+                answerOption.setStatus(answerOptionRequest.getStatus());
+                answerOption.setQuestion(question);
+                answerOptionRepository.save(answerOption);
+            }
+        }
+    }
 }

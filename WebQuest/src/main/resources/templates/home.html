@@ -29,15 +29,16 @@
                     <span th:text="${survey.title}">Название анкеты</span>
                     <div>
                         <a th:href="@{'/survey/' + ${survey.id}}" class="btn btn-primary">Пройти</a>
-                        <div class="dropdown" style="display: inline-block;">
+                        <div class="dropdown" style="display: inline-block;"
+                             th:if="${currentUser != null && survey.user != null && (currentUser.isadmin() || currentUser.id.longValue() == survey.user.id.longValue())}">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 ...
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li th:if="${currentUser != null && survey.user != null && (currentUser.isadmin() || currentUser.id.longValue() == survey.user.id.longValue())}">
+                                <li>
                                     <a class="dropdown-item" th:href="@{'/survey/edit/' + ${survey.id}}">Редактировать</a>
                                 </li>
-                                <li th:if="${currentUser != null && survey.user != null && (currentUser.isadmin() || currentUser.id.longValue() == survey.user.id.longValue())}">
+                                <li>
                                     <form th:action="@{'/surveys/survey/delete/' + ${survey.id}}" method="post" style="display: inline;">
                                         <button type="submit" class="dropdown-item" onclick="return confirm('Вы уверены, что хотите удалить эту анкету?')">Удалить</button>
                                     </form>
