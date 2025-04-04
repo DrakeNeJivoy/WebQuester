@@ -3,7 +3,6 @@ package com.example.WebQuest.controller;
 import com.example.WebQuest.dto.SurveyRequest;
 import com.example.WebQuest.model.Survey;
 import com.example.WebQuest.service.SurveyService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,5 +30,11 @@ public class SurveyController {
 
         Survey survey = surveyService.createSurvey(surveyRequest, userDetails.getUsername());
         return ResponseEntity.ok("Survey created with ID: " + survey.getId());
+    }
+
+    @PostMapping("/survey/delete/{id}")
+    public ResponseEntity<String> deleteSurvey(@PathVariable Long id) {
+        surveyService.deleteSurvey(id);
+        return ResponseEntity.ok("Survey with ID: " + id + " deleted successfully");
     }
 }

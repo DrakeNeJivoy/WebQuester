@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Getter
-@Setter // Добавь здесь, чтобы Lombok сгенерировал сеттеры для всех полей
+@Setter
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,6 +38,9 @@ public class User {
     @Column(unique = true, nullable = true)
     private String token;
 
+    @Column(nullable = false)
+    private boolean isadmin = false; // Добавлено поле isAdmin, по умолчанию false (0)
+
     public boolean isConfirmed() {
         return verified;
     }
@@ -46,6 +49,8 @@ public class User {
         this.verified = value;
     }
 
+
+    public Long getId() { return id; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -59,5 +64,11 @@ public class User {
     public void setToken(String token) { this.token = token; }
 
     public void setVerified(boolean confirmed) { this.verified = confirmed; }
-}
 
+    // В классе User
+    public boolean isadmin() {
+        System.out.println("isAdmin() вызван для пользователя с ID: " + this.id + " и isAdmin: " + this.isadmin);
+        return isadmin;
+    }
+    public void setadmin(boolean admin) { this.isadmin = admin; }
+}

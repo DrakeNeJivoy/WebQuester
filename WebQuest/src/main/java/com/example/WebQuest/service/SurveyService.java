@@ -64,10 +64,20 @@ public class SurveyService {
     }
 
     @Transactional
+    // В SurveyService
     public List<Survey> getAllSurveys() {
         List<Survey> surveys = surveyRepository.findAll();
-        System.out.println("Список анкет: " + surveys);  // Логируем анкеты
+        System.out.println("Найденные анкеты: " + surveys);
         return surveys;
     }
 
+    @Transactional
+    public void deleteSurvey(Long id) {
+        List<Question> questions = questionRepository.findBySurveyId(id);
+        for (Question question : questions) {
+            answerOptionRepository.deleteByQuestionId(question.getId()); // Удаляем варианты ответов
+        }
+        questionRepository.deleteBySurveyId(id); // Удаляем вопросы
+        surveyRepository.deleteById(id); // Удаляем анкету
+    }
 }
