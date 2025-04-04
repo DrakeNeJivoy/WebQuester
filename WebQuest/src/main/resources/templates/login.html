@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Вход</title>
@@ -7,37 +7,37 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<header class="bg-primary text-white text-center py-3 fixed-top">
-    <h2>Здесь будет логотип</h2>
+<header>
+    <h2>ЗДЕСЬ БУДЕТ ЛОГОТИП</h2>
 </header>
 
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="form-container text-center bg-primary text-white p-4 rounded">
-        <h3 class="mb-3">Вход</h3>
-
-        <div v-if="message" :class="messageType">
-            <p>{{ message }}</p>
+<div class="auth-container">
+    <div class="auth-box">
+        <h3>Вход</h3>
+        <div th:if="${errorMessage}" th:class="${errorType} ? ${errorType} : 'error'">
+            <p th:text="${errorMessage}"></p>
         </div>
-
-        <form @submit.prevent="submitLogin">
-            <input v-model="email" type="email" class="form-control mb-2" placeholder="Электронная почта" required>
-            <input v-model="password" type="password" class="form-control mb-2" placeholder="Пароль" required>
-            <button type="submit" class="btn btn-danger w-100">Войти</button>
+        <div th:if="${successMessage}" th:class="${successType} ? ${successType} : 'success'">
+            <p th:text="${successMessage}"></p>
+        </div>
+        <form id="loginForm" v-on:submit.prevent="submitLogin">
+            <input v-model="email" type="email" name="email" class="form-control" placeholder="Введите электронную почту" required>
+            <input v-model="password" type="password" name="password" class="form-control" placeholder="Введите пароль" required>
+            <button type="submit" class="btn">ВОЙТИ</button>
         </form>
-
-        <p class="mt-2">Нет аккаунта?
-            <a href="#" @click.prevent="showRegister">Зарегистрироваться</a>
+        <p>Новый пользователь?
+            <a href="register.html">Создать новый аккаунт</a>
         </p>
     </div>
 </div>
 
-<footer class="bg-primary text-white text-center py-3">
+<footer>
     <p>Ису-23</p>
 </footer>
 
 <!-- Подключаем Vue.js -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<!-- Подключаем JavaScript для входа -->
-<script src="login.js"></script>
+<!-- Подключаем JavaScript -->
+<script src="/login.js" th:src="@{/login.js}"></script>
 </body>
 </html>
