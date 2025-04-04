@@ -1,35 +1,39 @@
-Vue.createApp({
+const { createApp } = Vue;
+
+createApp({
     data() {
         return {
-            email: "",
-            password: "",
-            message: "",
-            messageType: ""
+            email: '',
+            password: ''
         };
     },
     methods: {
-        async submitLogin() {
-            try {
-                const formData = new FormData();
-                formData.append("email", this.email);
-                formData.append("password", this.password);
+        submitLogin() {
+            console.log('Submitting login form...');
+            console.log('Email:', this.email, 'Password:', this.password);
 
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.redirected) {
-                    window.location.href = response.url; // Перенаправление при успешном входе
+            // Отправка данных на сервер
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'email': this.email,
+                    'password': this.password
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Login successful');
+                    window.location.href = '/'; // Перенаправление после успешного логина
                 } else {
-                    const data = await response.text();
-                    this.message = data || 'Ошибка входа';
-                    this.messageType = 'error';
+                    console.log('Login failed');
                 }
-            } catch (error) {
-                this.message = 'Ошибка сервера. Попробуйте позже.';
-                this.messageType = 'error';
-            }
+            })
+            .catch(error => {
+                console.error('Error during login:', error);
+            });
         }
     }
-}).mount("#loginForm");
+}).mount('#loginForm');
