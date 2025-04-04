@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
@@ -14,14 +14,20 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="form-container text-center bg-primary text-white p-4 rounded">
         <h3 class="mb-3">Регистрация</h3>
-        <form th:action="@{/register}" method="post" th:object="${user}">
-            <input type="text" th:field="*{username}" class="form-control mb-2" placeholder="Имя пользователя" required>
-            <input type="email" th:field="*{email}" class="form-control mb-2" placeholder="Электронная почта" required>
-            <input type="password" th:field="*{password}" class="form-control mb-2" placeholder="Пароль" required>
+        
+        <div v-if="message" :class="messageType">
+            <p>{{ message }}</p>
+        </div>
+
+        <form @submit.prevent="submitRegister">
+            <input v-model="username" type="text" class="form-control mb-2" placeholder="Имя пользователя" required>
+            <input v-model="email" type="email" class="form-control mb-2" placeholder="Электронная почта" required>
+            <input v-model="password" type="password" class="form-control mb-2" placeholder="Пароль" required>
             <button type="submit" class="btn btn-danger w-100">Зарегистрироваться</button>
         </form>
+
         <p class="mt-2">Уже есть аккаунт?
-            <a href="/rtlogin" class="text-white">Войти</a>
+            <a href="#" @click.prevent="showLogin">Войти</a>
         </p>
     </div>
 </div>
@@ -29,5 +35,10 @@
 <footer class="bg-primary text-white text-center py-3">
     <p>Ису-23</p>
 </footer>
+
+<!-- Подключаем Vue.js -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- Подключаем JavaScript для регистрации -->
+<script src="register.js"></script>
 </body>
 </html>

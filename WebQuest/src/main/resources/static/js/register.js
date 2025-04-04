@@ -26,7 +26,6 @@ Vue.createApp({
                 if (result.success) {
                     this.message = result.message || 'Успешная регистрация!';
                     this.messageType = 'success';
-                    // Очищаем форму
                     this.username = '';
                     this.email = '';
                     this.password = '';
@@ -40,8 +39,7 @@ Vue.createApp({
             }
         },
         showLogin() {
-            document.getElementById("registerApp").classList.add("d-none");
-            document.getElementById("loginApp").classList.remove("d-none");
+            window.location.href = '/login'; // Перенаправление на страницу входа
         }
     }
-}).mount("#registerApp");
+}).mount("body");

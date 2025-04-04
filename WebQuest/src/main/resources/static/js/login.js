@@ -24,11 +24,10 @@ Vue.createApp({
                 if (result.success) {
                     this.message = result.message || 'Успешный вход!';
                     this.messageType = 'success';
-                    // Очищаем форму
                     this.email = '';
                     this.password = '';
-                    // Можно перенаправить пользователя, например:
-                    // window.location.href = '/dashboard';
+                    // Ожидаем перенаправление на другую страницу
+                    window.location.href = '/dashboard'; // Переход на главную страницу
                 } else {
                     this.message = result.message || 'Ошибка входа';
                     this.messageType = 'error';
@@ -39,8 +38,7 @@ Vue.createApp({
             }
         },
         showRegister() {
-            document.getElementById("loginApp").classList.add("d-none");
-            document.getElementById("registerApp").classList.remove("d-none");
+            window.location.href = '/register'; // Перенаправление на страницу регистрации
         }
     }
-}).mount("#loginApp");
+}).mount("body");
