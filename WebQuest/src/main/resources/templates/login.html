@@ -15,7 +15,7 @@
     <div class="auth-box">
         <h3>Вход</h3>
         <div v-if="message" :class="messageType">
-            <p>{{ message }}</p>
+            <p th:text="${message}"></p>
         </div>
         <div th:if="${errorMessage}" th:class="${errorType} ? ${errorType} : 'error'">
             <p th:text="${errorMessage}"></p>
