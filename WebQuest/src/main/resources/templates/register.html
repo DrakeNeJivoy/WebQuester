@@ -28,7 +28,7 @@
             <button type="submit" class="btn">ЗАРЕГИСТРИРОВАТЬСЯ</button>
         </form>
         <p>Есть аккаунт?
-            <a href="login.html">Войти</a>
+            <a th:href="@{/login}">Войти</a>
         </p>
     </div>
 </div>
@@ -38,8 +38,8 @@
 </footer>
 
 <!-- Подключаем Vue.js -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <!-- Подключаем JavaScript -->
-<script src="/register.js" th:src="@{/register.js}"></script>
+<script th:src="@{/register.js}"></script>
 </body>
 </html>
