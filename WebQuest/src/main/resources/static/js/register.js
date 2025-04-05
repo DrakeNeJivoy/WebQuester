@@ -11,37 +11,27 @@ Vue.createApp({
     methods: {
         async submitRegister() {
             try {
+                const formData = new FormData();
+                formData.append("username", this.username);
+                formData.append("email", this.email);
+                formData.append("password", this.password);
+
                 const response = await fetch('/register', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: this.username,
-                        email: this.email,
-                        password: this.password
-                    })
+                    body: formData
                 });
-                const result = await response.json();
-                if (result.success) {
-                    this.message = result.message || 'Успешная регистрация!';
-                    this.messageType = 'success';
-                    // Очищаем форму
-                    this.username = '';
-                    this.email = '';
-                    this.password = '';
+
+                if (response.redirected) {
+                    window.location.href = response.url; // Перенаправление
                 } else {
-                    this.message = result.message || 'Ошибка регистрации';
+                    const data = await response.text();
+                    this.message = data || 'Ошибка регистрации';
                     this.messageType = 'error';
                 }
             } catch (error) {
                 this.message = 'Ошибка сервера. Попробуйте позже.';
                 this.messageType = 'error';
             }
-        },
-        showLogin() {
-            document.getElementById("registerApp").classList.add("d-none");
-            document.getElementById("loginApp").classList.remove("d-none");
         }
     }
-}).mount("#registerApp");
+}).mount("#registerForm");

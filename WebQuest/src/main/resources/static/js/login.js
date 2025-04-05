@@ -10,37 +10,51 @@ Vue.createApp({
     methods: {
         async submitLogin() {
             try {
+                console.log('Submitting login form...');
+                console.log('Email:', this.email, 'Password:', this.password);
+
+                const formData = new URLSearchParams();
+                formData.append("email", this.email);
+                formData.append("password", this.password);
+
                 const response = await fetch('/login', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify({
-                        email: this.email,
-                        password: this.password
-                    })
+                    body: formData
                 });
-                const result = await response.json();
-                if (result.success) {
-                    this.message = result.message || 'Успешный вход!';
-                    this.messageType = 'success';
-                    // Очищаем форму
-                    this.email = '';
-                    this.password = '';
-                    // Можно перенаправить пользователя, например:
-                    // window.location.href = '/dashboard';
+
+                console.log('Response status:', response.status);
+                console.log('Response redirected:', response.redirected);
+                console.log('Response URL:', response.url);
+
+                if (response.redirected) {
+                    // Успешный логин, Spring Security перенаправляет
+                    window.location.href = response.url;
                 } else {
-                    this.message = result.message || 'Ошибка входа';
-                    this.messageType = 'error';
+                    // Ошибка логина, Spring Security перенаправляет на /login?error
+                    if (response.url.includes('error')) {
+                        this.message = 'Неверный email или пароль';
+                        this.messageType = 'error';
+                    } else {
+                        this.message = 'Ошибка входа';
+                        this.messageType = 'error';
+                    }
                 }
             } catch (error) {
+                console.error('Error during login:', error);
                 this.message = 'Ошибка сервера. Попробуйте позже.';
                 this.messageType = 'error';
             }
-        },
-        showRegister() {
-            document.getElementById("loginApp").classList.add("d-none");
-            document.getElementById("registerApp").classList.remove("d-none");
+        }
+    },
+    mounted() {
+        // Проверяем, есть ли параметр error в URL при загрузке страницы
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            this.message = 'Неверный email или пароль';
+            this.messageType = 'error';
         }
     }
-}).mount("#loginApp");
+}).mount("#loginForm");

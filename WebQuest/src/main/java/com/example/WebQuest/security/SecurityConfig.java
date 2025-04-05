@@ -22,12 +22,12 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/css/**","/confirm-email").permitAll()
+                        .requestMatchers("/register", "/login", "/css/**", "/js/**", "/confirm-email").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .usernameParameter("email")  // <-- тут важно!
+                        .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
