@@ -23,11 +23,12 @@
         <div th:if="${successMessage}" th:class="${successType} ? ${successType} : 'success'">
             <p th:text="${successMessage}"></p>
         </div>
-        <form id="loginForm" v-on:submit.prevent="submitLogin">
+        <form action="/login" method="post" id="loginForm" v-on:submit.prevent="submitLogin">
             <input v-model="email" type="email" name="email" class="form-control" placeholder="Введите электронную почту" required>
             <input v-model="password" type="password" name="password" class="form-control" placeholder="Введите пароль" required>
             <button type="submit" class="btn">ВОЙТИ</button>
         </form>
+
         <p>Новый пользователь?
             <a th:href="@{/register}">Создать новый аккаунт</a>
         </p>
