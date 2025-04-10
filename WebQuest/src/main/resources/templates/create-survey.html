@@ -1,21 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Создание анкеты</title>
-    <script src="/js/create-survey.js" defer></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="/css/create.css">
 </head>
 <body>
-<h1>Создание анкеты</h1>
-<form id="survey-form">
-    <label for="survey-title">Название анкеты:</label>
-    <input type="text" id="survey-title" name="title" required>
+<header class="header">
+    <h2>ЗДЕСЬ БУДЕТ ЛОГОТИП</h2>
+</header>
 
-    <h2>Вопросы</h2>
-    <div id="questions-container"></div>
-    <button type="button" id="add-question">Добавить вопрос</button>
+<div class="content-wrapper">
+    <div id="app" class="form-container">
+        <h1>Создание анкеты</h1>
+        <form @submit.prevent="submitSurvey">
+            <label for="survey-title">Название анкеты:</label>
+            <input 
+                type="text" 
+                id="survey-title" 
+                v-model="surveyData.title" 
+                required
+            >
 
-    <button type="submit">Создать анкету</button>
-</form>
+            <h2>Вопросы</h2>
+            <div class="question" v-for="(question, qIndex) in surveyData.questions" :key="qIndex">
+                <label :for="'question-' + qIndex">Вопрос:</label>
+                <input 
+                    type="text" 
+                    :id="'question-' + qIndex" 
+                    v-model="question.text" 
+                    required
+                >
+
+                <label>
+                    <input 
+                        type="checkbox" 
+                        v-model="question.hasCorrectAnswer"
+                        @change="toggleCorrectAnswers(qIndex)"
+                    > Есть правильный ответ
+                </label>
+
+                <div class="answers-container">
+                    <div class="answer" v-for="(answer, aIndex) in question.answerOptions" :key="aIndex">
+                        <input 
+                            type="text" 
+                            v-model="answer.text" 
+                            required
+                        >
+                        <input 
+                            type="checkbox" 
+                            v-model="answer.isCorrect"
+                            v-show="question.hasCorrectAnswer"
+                            class="correct-answer-checkbox"
+                        >
+                    </div>
+                    <button 
+                        type="button" 
+                        class="add-answer" 
+                        @click="addAnswer(qIndex)"
+                    >Добавить вариант ответа</button>
+                </div>
+            </div>
+            
+            <button type="button" id="add-question" @click="addQuestion">Добавить вопрос</button>
+            <button type="submit">Создать анкету</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>Ису-23</p>
+</footer>
+
+<script src="/js/create-survey.js"></script>
 </body>
 </html>
