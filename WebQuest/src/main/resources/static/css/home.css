@@ -1,74 +1,122 @@
-body {
+body, html {
+    height: 100%;
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f2f5;
+    background-color: #F5F7FA;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
-header {
-    background-color: #0d6efd;
+.header {
+    width: 100%;
+    height: 60px;
+    background-color: #4DA8DA;
     color: white;
-    padding: 20px;
-    text-align: center;
-    position: relative;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-header h1 {
+.header h1 {
     margin: 0;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .logout-btn {
     position: absolute;
-    top: 20px;
+    top: 50%;
     right: 20px;
+    transform: translateY(-50%);
     color: white;
-    text-decoration: none;
     font-weight: bold;
     background-color: transparent;
     border: 2px solid white;
-    padding: 8px 12px;
+    padding: 6px 12px;
     border-radius: 5px;
+    font-size: 14px;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .logout-btn:hover {
     background-color: white;
-    color: #0d6efd;
+    color: #4DA8DA;
+}
+
+footer {
+    width: 100%;
+    background-color: #4DA8DA;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.content-wrapper {
+    padding-top: 80px;
+    padding-bottom: 60px;
+    min-height: calc(100vh - 120px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
-    text-align: center;
-    margin-top: 30px;
-    padding: 0 20px; /* Добавляем отступы для адаптивности */
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    margin: 20px 0;
 }
 
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 30px;
 }
 
+.action-buttons a {
+    text-decoration: none;
+}
+
 .action-buttons a button {
-    background-color: #49a9f8;
+    background-color: #4DA8DA;
     color: white;
     border: none;
-    padding: 30px 40px;
-    border-radius: 15px;
-    font-size: 18px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    width: 200px;
-    height: 150px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 160px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .action-buttons a button:hover {
-    background-color: #2188f4;
+    background-color: #3998C7;
+    transform: scale(1.05);
 }
 
 .survey-section h2 {
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     color: #333;
+    font-size: 24px;
+    text-align: center;
 }
 
 .survey-list {
@@ -77,66 +125,113 @@ header h1 {
     align-items: center;
     gap: 15px;
     margin-top: 20px;
-    width: 100%; /* Занимает всю ширину контейнера */
+    width: 100%;
 }
 
 .survey-item {
-    background-color: #49a9f8;
+    background-color: #4DA8DA;
     color: white;
-    width: 90%; /* Адаптивная ширина */
-    max-width: 600px; /* Максимальная ширина, чтобы не растягивался на больших экранах */
-    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 20px;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-sizing: border-box; /* Учитывает padding и border в ширине */
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
 }
 
-.survey-item a button {
-    background-color: white;
-    color: #0d6efd;
+.survey-item:hover {
+    transform: scale(1.02);
+}
+
+.survey-item span {
+    font-size: 18px;
+}
+
+.survey-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-pass {
+    background-color: #28A745;
+    color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 14px;
     transition: background-color 0.3s;
 }
 
-.survey-item a button:hover {
-    background-color: #f0f0f0;
+.btn-pass:hover {
+    background-color: #218838;
 }
 
-footer {
-    background-color: #0d6efd;
+.btn-options {
+    background-color: transparent;
     color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
-/* Медиа-запросы для адаптивности */
+.btn-options:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-menu {
+    background-color: #4DA8DA;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: white;
+    padding: 8px 15px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #3998C7;
+}
+
 @media (max-width: 768px) {
+    .content-wrapper {
+        padding-top: 70px;
+        padding-bottom: 50px;
+    }
+
     .action-buttons a button {
-        width: 150px;
-        height: 120px;
-        padding: 20px 30px;
-        font-size: 16px;
+        width: 140px;
+        height: 80px;
+        padding: 10px;
+        font-size: 14px;
     }
 
     .survey-item {
-        width: 95%; /* Увеличиваем ширину на маленьких экранах */
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
 
     .survey-item span {
         margin-bottom: 10px;
     }
 
-    .survey-item a button {
+    .survey-actions {
+        justify-content: center;
+    }
+
+    .btn-pass,
+    .btn-options {
         width: 100%;
+        text-align: center;
     }
 }
