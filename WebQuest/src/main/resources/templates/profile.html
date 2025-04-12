@@ -1,16 +1,42 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <!-- Подключаем Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<h1>Профиль</h1>
+<header class="header">
+    <a th:href="@{/home}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Назад
+    </a>
+    <h1>Профиль</h1>
+</header>
 
-<p>Добро пожаловать, <strong th:text="${email}">User</strong>!</p>
+<div class="content-wrapper">
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <i class="fas fa-user-circle"></i>
+                <h2>Добро пожаловать, <strong th:text="${email}">User</strong>!</h2>
+            </div>
+            <div class="profile-actions">
+                <a th:href="@{/home}" class="action-btn home-btn">
+                    <i class="fas fa-home"></i> На главную
+                </a>
+                <a th:href="@{/logout}" class="action-btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<a href="/">На главную</a> |
-<a href="/logout">Выйти</a>
+<footer>
+    <p>Ису-23</p>
+</footer>
 </body>
 </html>

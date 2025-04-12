@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Редактирование анкеты</title>
   <link rel="stylesheet" th:href="@{/css/survey-editor.css}">
+  <!-- Подключаем Font Awesome для иконок -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -48,6 +49,7 @@
               <div th:each="answerOption, answerOptionStat : ${questionAnswerOptions.get(question.id)}" class="answer">
                 <input type="text" th:name="'questions[' + ${questionStat.count} + '][answerOptions][]'" th:value="${answerOption.text}" required>
                 <input type="checkbox" class="correct-answer-checkbox" th:name="'questions[' + ${questionStat.count} + '][correct]'" value="2" th:checked="${answerOption.status == 2}" th:style="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0 ? 'display: inline-block;' : 'display: none;'}">
+                <!-- Кнопка удаления варианта ответа -->
                 <button type="button" class="delete-answer" th:data-question="${questionStat.count}" th:data-answer="${answerOptionStat.count}">
                   <i class="fas fa-trash-alt"></i>
                 </button>
