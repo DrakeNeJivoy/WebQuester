@@ -30,10 +30,8 @@ Vue.createApp({
                 console.log('Response URL:', response.url);
 
                 if (response.redirected) {
-                    // Успешный логин, Spring Security перенаправляет
                     window.location.href = response.url;
                 } else {
-                    // Ошибка логина, Spring Security перенаправляет на /login?error
                     if (response.url.includes('error')) {
                         this.message = 'Неверный email или пароль';
                         this.messageType = 'error';
@@ -50,7 +48,7 @@ Vue.createApp({
         }
     },
     mounted() {
-        // Проверяем, есть ли параметр error в URL при загрузке страницы
+    
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('error')) {
             this.message = 'Неверный email или пароль';

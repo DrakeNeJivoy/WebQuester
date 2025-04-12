@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Меню</title>
     <link rel="stylesheet" th:href="@{/css/menu.css}">
-    <!-- Подключаем Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Подключаем Vue.js -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
@@ -20,7 +18,6 @@
     </header>
 
     <div class="wrapper">
-        <!-- Боковое меню -->
         <nav class="sidebar" :class="{ 'sidebar-collapsed': isCollapsed }">
             <button class="toggle-btn" @click="toggleSidebar">
                 <i :class="isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></i>
@@ -64,8 +61,6 @@
                 </li>
             </ul>
         </nav>
-
-        <!-- Основной контент -->
         <div class="content-wrapper">
             <div class="container">
                 <h2>Добро пожаловать!</h2>

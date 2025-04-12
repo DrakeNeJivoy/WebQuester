@@ -3,8 +3,8 @@ const { createApp } = Vue;
 createApp({
     data() {
         return {
-            isCollapsed: false, // Состояние бокового меню (свернуто/развернуто)
-            activeMenu: 'home' // Активный пункт меню
+            isCollapsed: false,
+            activeMenu: 'home'
         };
     },
     methods: {

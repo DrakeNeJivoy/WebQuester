@@ -24,7 +24,7 @@ createApp({
             });
         },
         toggleCorrectAnswers(questionIndex) {
-            // При изменении флага "Есть правильный ответ" сбрасываем все isCorrect, если флаг снят
+            
             if (!this.surveyData.questions[questionIndex].hasCorrectAnswer) {
                 this.surveyData.questions[questionIndex].answerOptions.forEach(answer => {
                     answer.isCorrect = false;
@@ -32,7 +32,7 @@ createApp({
             }
         },
         submitSurvey() {
-            // Формируем данные для отправки
+            
             const formattedData = {
                 title: this.surveyData.title,
                 questions: this.surveyData.questions.map(question => ({

@@ -1,41 +1,37 @@
-/* --- Сброс стилей и общие настройки --- */
 body, html {
     height: 100%;
     margin: 0;
-    background-color: #F5F7FA; /* Мягкий светло-серый фон */
+    background-color: #F5F7FA;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* --- Единый стиль хедера --- */
 header {
     width: 100%;
     height: 80px;
     top: 0;
     left: 0;
     z-index: 1000;
-    background-color: #4DA8DA !important; /* Мягкий голубой вместо primary */
+    background-color: #4DA8DA !important;
     color: white;
     padding: 15px 0;
     text-align: center;
     position: fixed;
 }
 
-/* --- Футер --- */
 footer {
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
-    background-color: #4DA8DA !important; /* Мягкий голубой */
+    background-color: #4DA8DA !important;
     color: white;
     text-align: center;
     padding: 15px 0;
     font-size: 16px;
 }
 
-/* --- Центрирование формы логина/регистрации --- */
 .auth-container {
     flex-grow: 1;
     display: flex;
@@ -44,30 +40,28 @@ footer {
 }
 
 .auth-box {
-    background-color: #4DA8DA; /* Мягкий голубой */
+    background-color: #4DA8DA;
     padding: 50px;
     border-radius: 12px;
     text-align: center;
     width: 400px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Мягче тень */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Поля ввода с Bootstrap-стилями --- */
 .auth-box .form-control {
     width: 100%;
     padding: 12px;
     margin-top: 12px;
-    border: 1px solid #ced4da; /* Стандартная граница Bootstrap */
+    border: 1px solid #ced4da;
     border-radius: 6px;
     font-size: 16px;
     background-color: white;
     color: #333;
 }
 
-/* --- Кнопки с Bootstrap-стилями --- */
 .auth-box .btn {
     width: 100%;
-    background-color: #28A745 !important; /* Зеленый акцент вместо danger */
+    background-color: #28A745 !important;
     color: white;
     padding: 12px;
     margin-top: 25px;
@@ -77,10 +71,9 @@ footer {
 }
 
 .auth-box .btn:hover {
-    background-color: #218838 !important; /* Темнее зеленый */
+    background-color: #218838 !important;
 }
 
-/* --- Бургер-кнопка --- */
 .burger-btn {
     background: none;
     border: none;
@@ -102,7 +95,6 @@ footer {
     transition: 0.3s ease-in-out;
 }
 
-/* --- Анимация бургера --- */
 .burger-btn.active .burger-icon:nth-child(1) {
     transform: translateY(10px) rotate(90deg);
 }
@@ -115,14 +107,13 @@ footer {
     transform: translateY(-10px) rotate(-90deg);
 }
 
-/* --- Меню --- */
 #menu {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: #4DA8DA; /* Мягкий голубой */
+    background: #4DA8DA;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,7 +126,6 @@ footer {
     transform: translateY(0);
 }
 
-/* --- Список меню --- */
 #menu ul {
     list-style: none;
     padding: 0;
@@ -155,16 +145,14 @@ footer {
     display: block;
 }
 
-/* --- Заголовок "Выберите анкету" --- */
 .survey-title {
     font-size: 26px;
     font-weight: bold;
-    color: #333; /* Темно-серый */
+    color: #333;
     margin-bottom: 25px;
     text-align: center;
 }
 
-/* --- Блоки анкет --- */
 .survey-box {
     width: 100%;
     max-width: 350px;
@@ -175,7 +163,7 @@ footer {
     font-size: 1.6rem;
     text-decoration: none;
     color: white;
-    background-color: #4DA8DA; /* Мягкий голубой */
+    background-color: #4DA8DA;
     border-radius: 12px;
     margin-bottom: 25px;
     transition: transform 0.2s, background-color 0.2s;
@@ -183,23 +171,21 @@ footer {
 
 .survey-box:hover {
     transform: scale(1.07);
-    background-color: #3998C7; /* Более мягкий оттенок */
+    background-color: #3998C7;
 }
 
-/* --- Иконки --- */
 .icon {
     width: 60px;
     height: 60px;
     margin-bottom: 12px;
-    filter: brightness(0) invert(1); /* Белые иконки */
+    filter: brightness(0) invert(1);
 }
 
-/* --- Центрирование формы --- */
 .form-container {
     width: 400px;
     padding: 35px;
     border-radius: 12px;
-    background-color: #4DA8DA; /* Мягкий голубой */
+    background-color: #4DA8DA;
 }
 
 .form-container .form-control {
@@ -212,11 +198,11 @@ footer {
 .form-container .btn {
     font-size: 20px;
     padding: 14px;
-    background-color: #28A745 !important; /* Зеленый акцент */
+    background-color: #28A745 !important;
 }
 
 .form-container .btn:hover {
-    background-color: #218838 !important; /* Темнее зеленый */
+    background-color: #218838 !important;
 }
 
 .form-container h3 {
@@ -224,7 +210,6 @@ footer {
     color: white;
 }
 
-/* Стили для профиля */
 .profile-info {
     font-size: 18px;
     margin-bottom: 15px;

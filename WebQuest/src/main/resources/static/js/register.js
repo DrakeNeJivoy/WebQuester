@@ -22,7 +22,7 @@ Vue.createApp({
                 });
 
                 if (response.redirected) {
-                    window.location.href = response.url; // Перенаправление
+                    window.location.href = response.url
                 } else {
                     const data = await response.text();
                     this.message = data || 'Ошибка регистрации';
