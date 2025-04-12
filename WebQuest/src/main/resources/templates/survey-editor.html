@@ -2,39 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Редактирование анкеты</title>
+  <link rel="stylesheet" th:href="@{/css/survey-editor.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<h1>Редактирование анкеты</h1>
-<form id="survey-form">
-  <label for="survey-title">Название анкеты:</label>
-  <input type="text" id="survey-title" name="title" th:value="${survey.title}" required>
+<header class="header">
+  <a th:href="@{/home}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Назад
+  </a>
+  <h1>Редактирование анкеты</h1>
+</header>
 
-  <h2>Вопросы</h2>
-  <div id="questions-container">
-    <div th:each="question, questionStat : ${questions}" class="question">
-      <label th:for="'question-' + ${questionStat.count}">Вопрос:</label>
-      <input type="text" th:id="'question-' + ${questionStat.count}" th:name="'questions[' + ${questionStat.count} + '][text]'" th:value="${question.text}" required>
-
-      <label>
-        <input type="checkbox" class="has-correct-answer" th:data-question="${questionStat.count}"
-               th:checked="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}"> Есть правильный ответ
-      </label>
-
-      <div class="answers-container" th:id="'answers-' + ${questionStat.count}">
-        <div th:each="answerOption, answerOptionStat : ${questionAnswerOptions.get(question.id)}" class="answer">
-          <input type="text" th:name="'questions[' + ${questionStat.count} + '][answerOptions][]'" th:value="${answerOption.text}" required>
-          <input type="checkbox" class="correct-answer-checkbox" th:name="'questions[' + ${questionStat.count} + '][correct]'" value="2" th:checked="${answerOption.status == 2}"
-                 th:style="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0 ? 'display: inline-block;' : 'display: none;'}">
-        </div>
-        <button type="button" class="add-answer" th:data-question="${questionStat.count}">Добавить вариант ответа</button>
+<div class="content-wrapper">
+  <div class="container">
+    <form id="survey-form" th:action="@{/survey/edit/{id}(id=${survey.id})}" method="post">
+      <div class="form-group">
+        <label for="survey-title">
+          <i class="fas fa-heading"></i> Название анкеты:
+        </label>
+        <input type="text" id="survey-title" name="title" th:value="${survey.title}" required>
       </div>
-    </div>
-  </div>
-  <button type="button" id="add-question">Добавить вопрос</button>
 
-  <button type="submit">Сохранить изменения</button>
-</form>
+      <div class="questions-section">
+        <h2>Вопросы</h2>
+        <div id="questions-container">
+          <div th:each="question, questionStat : ${questions}" class="question">
+            <div class="question-header">
+              <label th:for="'question-' + ${questionStat.count}">
+                <i class="fas fa-question-circle"></i> Вопрос <span th:text="${questionStat.count}"></span>:
+              </label>
+              <button type="button" class="delete-question" th:data-question="${questionStat.count}">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+            <input type="text" th:id="'question-' + ${questionStat.count}" th:name="'questions[' + ${questionStat.count} + '][text]'" th:value="${question.text}" required>
+
+            <label class="checkbox-label">
+              <input type="checkbox" class="has-correct-answer" th:data-question="${questionStat.count}" th:checked="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}">
+              <span>Есть правильный ответ</span>
+            </label>
+
+            <div class="answers-container" th:id="'answers-' + ${questionStat.count}">
+              <div th:each="answerOption, answerOptionStat : ${questionAnswerOptions.get(question.id)}" class="answer">
+                <input type="text" th:name="'questions[' + ${questionStat.count} + '][answerOptions][]'" th:value="${answerOption.text}" required>
+                <input type="checkbox" class="correct-answer-checkbox" th:name="'questions[' + ${questionStat.count} + '][correct]'" value="2" th:checked="${answerOption.status == 2}" th:style="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0 ? 'display: inline-block;' : 'display: none;'}">
+                <button type="button" class="delete-answer" th:data-question="${questionStat.count}" th:data-answer="${answerOptionStat.count}">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+              <button type="button" class="add-answer" th:data-question="${questionStat.count}">
+                <i class="fas fa-plus-circle"></i> Добавить вариант ответа
+              </button>
+            </div>
+          </div>
+        </div>
+        <button type="button" id="add-question">
+          <i class="fas fa-plus-circle"></i> Добавить вопрос
+        </button>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-save"></i> Сохранить изменения
+      </button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>Ису-23</p>
+</footer>
+
 <script src="/js/survey-editor.js"></script>
 </body>
 </html>
