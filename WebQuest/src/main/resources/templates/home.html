@@ -10,29 +10,35 @@
 </head>
 <body>
 <header class="header">
-    <a th:href="@{/menu}" class="menu-link">Меню</a>
+    <a th:href="@{/menu}" class="menu-link">
+        <i class="fas fa-bars"></i> Меню
+    </a>
     <h1>Панель управления</h1>
-    <a class="logout-btn" th:href="@{/logout}">Выйти</a>
+    <a th:href="@{/logout}" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Выйти
+    </a>
 </header>
 
 <div class="content-wrapper">
     <div class="container">
         <div class="action-buttons">
-            <a th:href="@{/home-create-survey}">
-                <button>Создать анкету</button>
+            <a th:href="@{/home-create-survey}" class="action-btn create-btn">
+                <i class="fas fa-plus-circle"></i> Создать анкету
             </a>
-            <a th:href="@{/profile}">
-                <button>Профиль</button>
+            <a th:href="@{/profile}" class="action-btn profile-btn">
+                <i class="fas fa-user-circle"></i> Профиль
             </a>
         </div>
 
         <div class="survey-section">
             <h2>Список анкет</h2>
             <div class="survey-list">
-                <div class="survey-item" th:each="survey : ${surveys}">
+                <div class="survey-item" th:each="survey, surveyStat : ${surveys}" th:classappend="${surveyStat.last} ? 'last-survey-item'">
                     <span th:text="${survey.title}">Название анкеты</span>
                     <div class="survey-actions">
-                        <a th:href="@{'/survey/' + ${survey.id}}" class="btn-pass">Пройти</a>
+                        <a th:href="@{'/survey/' + ${survey.id}}" class="btn-pass">
+                            <i class="fas fa-play"></i> Пройти
+                        </a>
                         <div class="dropdown" th:if="${currentUser != null && survey.user != null && (currentUser.isadmin() || currentUser.id.longValue() == survey.user.id.longValue())}">
                             <button class="btn-options" type="button">
                                 <i class="fas fa-ellipsis-v"></i>
@@ -46,7 +52,7 @@
                                 <li>
                                     <form th:action="@{'/surveys/survey/delete/' + ${survey.id}}" method="post" style="display: none;" th:id="'delete-form-' + ${survey.id}">
                                     </form>
-                                    <a class="dropdown-item delete-link" href="#" th:data-form-id="'delete-form-' + ${survey.id}" onclick="return confirm('Вы уверены, что хотите удалить эту анкету?')">
+                                    <a class="dropdown-item delete-link" href="#" th:data-form-id="'delete-form-' + ${survey.id}">
                                         <i class="fas fa-trash-alt"></i> Удалить
                                     </a>
                                 </li>
@@ -63,14 +69,20 @@
     <p>Ису-23</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const dropdowns = document.querySelectorAll('.dropdown');
+        const contentWrapper = document.querySelector('.content-wrapper');
+        const basePaddingBottom = 60; // Базовый отступ снизу (должен совпадать с CSS)
+        const extraPadding = 100; // Дополнительный отступ при открытии меню у последней анкеты
+
+        // Устанавливаем начальный отступ
+        contentWrapper.style.paddingBottom = `${basePaddingBottom}px`;
 
         dropdowns.forEach(dropdown => {
             const button = dropdown.querySelector('.btn-options');
             const menu = dropdown.querySelector('.dropdown-menu');
+            const surveyItem = dropdown.closest('.survey-item');
 
             button.addEventListener('click', function (event) {
                 event.stopPropagation();
@@ -82,12 +94,25 @@
                 });
                 // Переключаем текущее меню
                 menu.classList.toggle('show');
+
+                // Проверяем, является ли это последней анкетой
+                if (surveyItem.classList.contains('last-survey-item') && menu.classList.contains('show')) {
+                    // Если меню открыто у последней анкеты, увеличиваем отступ
+                    contentWrapper.style.paddingBottom = `${basePaddingBottom + extraPadding}px`;
+                } else {
+                    // Если меню закрыто или это не последняя анкета, возвращаем базовый отступ
+                    contentWrapper.style.paddingBottom = `${basePaddingBottom}px`;
+                }
             });
 
             // Закрываем меню при клике вне его
             document.addEventListener('click', function (event) {
                 if (!dropdown.contains(event.target)) {
                     menu.classList.remove('show');
+                    // Если меню закрыто и это была последняя анкета, возвращаем базовый отступ
+                    if (surveyItem.classList.contains('last-survey-item')) {
+                        contentWrapper.style.paddingBottom = `${basePaddingBottom}px`;
+                    }
                 }
             });
         });

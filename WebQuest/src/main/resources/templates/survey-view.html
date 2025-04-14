@@ -1,12 +1,90 @@
-<h1 th:text="${survey.title}">Название анкеты</h1>
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкетирование</title>
+    <link rel="stylesheet" th:href="@{/css/survey-view.css}">
+    <!-- Подключаем Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<header class="header">
+    <a th:href="@{/home}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Назад
+    </a>
+    <h1 th:text="${survey.title}">Название анкеты</h1>
+</header>
 
-<ul>
-    <li th:each="question : ${questions}">
-        <p th:text="${question.text}"></p>
-        <ul>
-            <li th:each="answer : ${questionAnswerOptions[question.id]}">
-                <span th:text="${answer.text}"></span>
-            </li>
-        </ul>
-    </li>
-</ul>
+<div class="content-wrapper">
+    <div class="container">
+        <form id="survey-form" th:action="@{/survey/{id}/submit(id=${survey.id})}" method="post">
+            <div class="questions-section">
+                <div class="question" th:each="question, questionStat : ${questions}">
+                    <div class="question-header">
+                        <h2>
+                            <i class="fas fa-question-circle"></i> Вопрос <span th:text="${questionStat.count}"></span>: <span th:text="${question.text}">Текст вопроса</span>
+                        </h2>
+                    </div>
+                    <div class="answers-container">
+                        <!-- Если есть хотя бы один правильный ответ (status == 2) -->
+                        <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}">
+                            <!-- Если только один правильный ответ -->
+                            <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() == 1}">
+                                <div class="answer" th:each="answerOption : ${questionAnswerOptions.get(question.id)}">
+                                    <label class="answer-label">
+                                        <input 
+                                            type="radio" 
+                                            th:name="'answers[' + ${questionStat.count} + ']'" 
+                                            th:value="${answerOption.id}" 
+                                            required
+                                        >
+                                        <span th:text="${answerOption.text}">Вариант ответа</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Если несколько правильных ответов -->
+                            <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() > 1}">
+                                <div class="answer" th:each="answerOption : ${questionAnswerOptions.get(question.id)}">
+                                    <label class="answer-label">
+                                        <input 
+                                            type="checkbox" 
+                                            th:name="'answers[' + ${questionStat.count} + '][]'" 
+                                            th:value="${answerOption.id}"
+                                        >
+                                        <span th:text="${answerOption.text}">Вариант ответа</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Если нет правильных ответов (status == 0) -->
+                        <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() == 0}">
+                            <div class="answer" th:each="answerOption : ${questionAnswerOptions.get(question.id)}">
+                                <label class="answer-label">
+                                    <input 
+                                        type="checkbox" 
+                                        th:name="'answers[' + ${questionStat.count} + '][]'" 
+                                        th:value="${answerOption.id}"
+                                    >
+                                    <span th:text="${answerOption.text}">Вариант ответа</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-check-circle"></i> Отправить ответы
+            </button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>Ису-23</p>
+</footer>
+
+<script src="/js/survey-view.js"></script>
+</body>
+</html>
