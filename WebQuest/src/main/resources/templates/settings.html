@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройки</title>
+    <title>{{ currentTranslations.settings }}</title>
     <link rel="stylesheet" th:href="@{/css/settings.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -14,7 +14,7 @@
         <button class="burger-btn" @click="toggleMenu">
             <i class="fas fa-bars"></i>
         </button>
-        <h1>{{ translations.settings }}</h1>
+        <h1>{{ currentTranslations.settings }}</h1>
     </header>
 
     <nav class="burger-menu" :class="{ 'open': isMenuOpen }">
@@ -22,31 +22,31 @@
             <li class="menu-item">
                 <a th:href="@{/home}" :class="{ active: activeMenu === 'surveys' }" @click="setActiveMenu('surveys')">
                     <i class="fas fa-list"></i>
-                    <span class="menu-text">{{ translations.surveys }}</span>
+                    <span class="menu-text">{{ currentTranslations.surveys }}</span>
                 </a>
             </li>
             <li class="menu-item">
                 <a th:href="@{/settings}" :class="{ active: activeMenu === 'settings' }" @click="setActiveMenu('settings')">
                     <i class="fas fa-cog"></i>
-                    <span class="menu-text">{{ translations.settings }}</span>
+                    <span class="menu-text">{{ currentTranslations.settings }}</span>
                 </a>
             </li>
             <li class="menu-item">
                 <a th:href="@{/profile}" :class="{ active: activeMenu === 'profile' }" @click="setActiveMenu('profile')">
                     <i class="fas fa-user"></i>
-                    <span class="menu-text">{{ translations.profile }}</span>
+                    <span class="menu-text">{{ currentTranslations.profile }}</span>
                 </a>
             </li>
             <li class="menu-item">
                 <a th:href="@{/about}" :class="{ active: activeMenu === 'about' }" @click="setActiveMenu('about')">
                     <i class="fas fa-info-circle"></i>
-                    <span class="menu-text">{{ translations.about }}</span>
+                    <span class="menu-text">{{ currentTranslations.about }}</span>
                 </a>
             </li>
             <li class="menu-item">
                 <a th:href="@{/logout}" :class="{ active: activeMenu === 'logout' }" @click="setActiveMenu('logout')">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="menu-text">{{ translations.logout }}</span>
+                    <span class="menu-text">{{ currentTranslations.logout }}</span>
                 </a>
             </li>
         </ul>
@@ -54,20 +54,20 @@
 
     <div class="content-wrapper">
         <div class="container">
-            <h2>{{ translations.settings }}</h2>
+            <h2>{{ currentTranslations.settings }}</h2>
             <div class="settings-section">
                 <div class="setting-item">
-                    <label>{{ translations.theme }}</label>
+                    <label>{{ currentTranslations.theme }}</label>
                     <div class="theme-toggle">
-                        <span :class="{ active: theme === 'light' }" @click="setTheme('light')">{{ translations.light }}</span>
-                        <span :class="{ active: theme === 'dark' }" @click="setTheme('dark')">{{ translations.dark }}</span>
+                        <span :class="{ active: theme === 'light' }" @click="setTheme('light')">{{ currentTranslations.light }}</span>
+                        <span :class="{ active: theme === 'dark' }" @click="setTheme('dark')">{{ currentTranslations.dark }}</span>
                     </div>
                 </div>
                 <div class="setting-item">
-                    <label>{{ translations.language }}</label>
+                    <label>{{ currentTranslations.language }}</label>
                     <select v-model="language" @change="setLanguage">
-                        <option value="ru">{{ translations.russian }}</option>
-                        <option value="en">{{ translations.english }}</option>
+                        <option value="ru">{{ currentTranslations.russian }}</option>
+                        <option value="en">{{ currentTranslations.english }}</option>
                     </select>
                 </div>
             </div>

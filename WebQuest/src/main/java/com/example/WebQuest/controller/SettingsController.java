@@ -1,5 +1,9 @@
 package com.example.WebQuest.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.WebQuest.service.SurveyService;
@@ -14,8 +18,14 @@ import com.example.WebQuest.service.UserService;
 @Controller
 public class SettingsController {
 
+    private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
+
     @GetMapping("/settings")
-    public String showSettings() {
+    public String showSettings(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) {
+            return "redirect:/login"; // Перенаправление на логин, если пользователь не аутентифицирован
+        }
+        System.out.println("Загрузка настроек");
         return "settings";
     }
 }

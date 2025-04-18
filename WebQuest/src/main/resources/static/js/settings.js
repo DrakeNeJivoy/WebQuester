@@ -1,6 +1,7 @@
 const { createApp } = Vue;
 
-createApp({
+const app = createApp({
+    delimiters: ['{{', '}}'], // Изменяем синтаксис Vue
     data() {
         return {
             isMenuOpen: false,
@@ -51,6 +52,7 @@ createApp({
         },
         setLanguage() {
             localStorage.setItem('language', this.language);
+            this.$forceUpdate(); // Принудительно обновляем рендеринг
         }
     },
     computed: {
