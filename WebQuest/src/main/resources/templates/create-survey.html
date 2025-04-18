@@ -3,111 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создание анкеты</title>
+    <title>{{ translations.createSurvey }}</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/js/translations.js"></script>
     <link rel="stylesheet" href="/css/create.css">
-    <!-- Подключаем Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<header class="header">
-    <a href="/home" class="back-link">
-        <i class="fas fa-arrow-left"></i> Назад
-    </a>
-    <h1>Создание анкеты</h1>
-</header>
+<div id="app" :class="theme">
+    <header class="header">
+        <a href="/home" class="back-link">
+            <i class="fas fa-arrow-left"></i> {{ translations.back }}
+        </a>
+        <h1>{{ translations.createSurvey }}</h1>
+    </header>
 
-<div class="content-wrapper">
-    <div id="app" class="form-container">
-        <form @submit.prevent="submitSurvey">
-            <div class="form-group">
-                <label for="survey-title">
-                    <i class="fas fa-heading"></i> Название анкеты:
-                </label>
-                <input
-                        type="text"
-                        id="survey-title"
-                        v-model="surveyData.title"
-                        required
-                >
-            </div>
-
-            <div class="questions-section">
-                <h2>Вопросы</h2>
-                <div class="question" v-for="(question, qIndex) in surveyData.questions" :key="qIndex">
-                    <div class="question-header">
-                        <label :for="'question-' + qIndex">
-                            <i class="fas fa-question-circle"></i> Вопрос {{ qIndex + 1 }}:
-                        </label>
-                        <button
-                                type="button"
-                                class="delete-question"
-                                @click="deleteQuestion(qIndex)"
-                        >
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
+    <div class="content-wrapper">
+        <div class="form-container">
+            <form @submit.prevent="submitSurvey">
+                <div class="form-group">
+                    <label for="survey-title">
+                        <i class="fas fa-heading"></i> {{ translations.title }}:
+                    </label>
                     <input
                             type="text"
-                            :id="'question-' + qIndex"
-                            v-model="question.text"
+                            id="survey-title"
+                            v-model="surveyData.title"
                             required
                     >
+                </div>
 
-                    <label class="checkbox-label">
-                        <input
-                                type="checkbox"
-                                v-model="question.hasCorrectAnswer"
-                                @change="toggleCorrectAnswers(qIndex)"
-                        >
-                        <span>Есть правильный ответ</span>
-                    </label>
-
-                    <div class="answers-container">
-                        <div class="answer" v-for="(answer, aIndex) in question.answerOptions" :key="aIndex">
-                            <input
-                                    type="text"
-                                    v-model="answer.text"
-                                    required
-                            >
-                            <input
-                                    type="checkbox"
-                                    v-model="answer.isCorrect"
-                                    v-show="question.hasCorrectAnswer"
-                                    class="correct-answer-checkbox"
-                            >
+                <div class="questions-section">
+                    <h2>{{ translations.questions }}</h2>
+                    <div class="question" v-for="(question, qIndex) in surveyData.questions" :key="qIndex">
+                        <div class="question-header">
+                            <label :for="'question-' + qIndex">
+                                <i class="fas fa-question-circle"></i> {{ translations.question }} {{ qIndex + 1 }}:
+                            </label>
                             <button
                                     type="button"
-                                    class="delete-answer"
-                                    @click="deleteAnswer(qIndex, aIndex)"
+                                    class="delete-question"
+                                    @click="deleteQuestion(qIndex)"
                             >
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
-                        <button
-                                type="button"
-                                class="add-answer"
-                                @click="addAnswer(qIndex)"
+                        <input
+                                type="text"
+                                :id="'question-' + qIndex"
+                                v-model="question.text"
+                                required
                         >
-                            <i class="fas fa-plus-circle"></i> Добавить вариант ответа
-                        </button>
+
+                        <label class="checkbox-label">
+                            <input
+                                    type="checkbox"
+                                    v-model="question.hasCorrectAnswer"
+                                    @change="toggleCorrectAnswers(qIndex)"
+                            >
+                            <span>{{ translations.hasCorrectAnswer }}</span>
+                        </label>
+
+                        <div class="answers-container">
+                            <div class="answer" v-for="(answer, aIndex) in question.answerOptions" :key="aIndex">
+                                <input
+                                        type="text"
+                                        v-model="answer.text"
+                                        required
+                                >
+                                <input
+                                        type="checkbox"
+                                        v-model="answer.isCorrect"
+                                        v-show="question.hasCorrectAnswer"
+                                        class="correct-answer-checkbox"
+                                >
+                                <button
+                                        type="button"
+                                        class="delete-answer"
+                                        @click="deleteAnswer(qIndex, aIndex)"
+                                >
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            <button
+                                    type="button"
+                                    class="add-answer"
+                                    @click="addAnswer(qIndex)"
+                            >
+                                <i class="fas fa-plus-circle"></i> {{ translations.addOption }}
+                            </button>
+                        </div>
                     </div>
+                    <button type="button" id="add-question" @click="addQuestion">
+                        <i class="fas fa-plus-circle"></i> {{ translations.addQuestion }}
+                    </button>
                 </div>
-                <button type="button" id="add-question" @click="addQuestion">
-                    <i class="fas fa-plus-circle"></i> Добавить вопрос
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> {{ translations.createSurvey }}
                 </button>
-            </div>
-
-            <button type="submit" class="submit-btn">
-                <i class="fas fa-save"></i> Создать анкету
-            </button>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
-<footer>
-    <p>Ису-23</p>
-</footer>
+    <footer>
+        <p>{{ translations.footer }}</p>
+    </footer>
+</div>
 
 <script src="/js/create-survey.js"></script>
 </body>

@@ -7,35 +7,7 @@ const app = createApp({
             isMenuOpen: false,
             activeMenu: 'settings',
             theme: localStorage.getItem('theme') || 'light',
-            language: localStorage.getItem('language') || 'ru',
-            translations: {
-                ru: {
-                    settings: 'Настройки',
-                    surveys: 'Анкеты',
-                    profile: 'Профиль',
-                    about: 'О нас',
-                    logout: 'Выйти',
-                    theme: 'Тема',
-                    light: 'Светлая',
-                    dark: 'Темная',
-                    language: 'Язык',
-                    russian: 'Русский',
-                    english: 'Английский'
-                },
-                en: {
-                    settings: 'Settings',
-                    surveys: 'Surveys',
-                    profile: 'Profile',
-                    about: 'About Us',
-                    logout: 'Logout',
-                    theme: 'Theme',
-                    light: 'Light',
-                    dark: 'Dark',
-                    language: 'Language',
-                    russian: 'Russian',
-                    english: 'English'
-                }
-            }
+            language: localStorage.getItem('language') || 'ru'
         };
     },
     methods: {
@@ -56,8 +28,8 @@ const app = createApp({
         }
     },
     computed: {
-        currentTranslations() {
-            return this.translations[this.language];
+        translations() {
+            return translations[this.language];
         }
     }
 }).mount('#app');
