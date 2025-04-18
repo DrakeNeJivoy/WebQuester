@@ -1,71 +1,61 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Меню</title>
-    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <link rel="stylesheet" href="/css/menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
 <div id="app">
     <header class="header">
+        <button class="burger-btn" @click="toggleMenu">
+            <i class="fas fa-bars"></i>
+        </button>
         <h1>Меню</h1>
-        <a class="logout-btn" th:href="@{/logout}">
-            <i class="fas fa-sign-out-alt"></i> Выйти
-        </a>
     </header>
 
-    <div class="wrapper">
-        <nav class="sidebar" :class="{ 'sidebar-collapsed': isCollapsed }">
-            <button class="toggle-btn" @click="toggleSidebar">
-                <i :class="isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></i>
-            </button>
-            <ul class="sidebar-menu">
-                <li>
-                    <a th:href="@{/home}" :class="{ active: activeMenu === 'home' }" @click="setActiveMenu('home')">
-                        <i class="fas fa-home"></i>
-                        <span class="menu-text">Главная</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/home-create-survey}" :class="{ active: activeMenu === 'create-survey' }" @click="setActiveMenu('create-survey')">
-                        <i class="fas fa-plus-circle"></i>
-                        <span class="menu-text">Создать анкету</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/my-surveys}" :class="{ active: activeMenu === 'my-surveys' }" @click="setActiveMenu('my-surveys')">
-                        <i class="fas fa-list"></i>
-                        <span class="menu-text">Мои анкеты</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/profile}" :class="{ active: activeMenu === 'profile' }" @click="setActiveMenu('profile')">
-                        <i class="fas fa-user"></i>
-                        <span class="menu-text">Профиль</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/statistics}" :class="{ active: activeMenu === 'statistics' }" @click="setActiveMenu('statistics')">
-                        <i class="fas fa-chart-bar"></i>
-                        <span class="menu-text">Статистика</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/settings}" :class="{ active: activeMenu === 'settings' }" @click="setActiveMenu('settings')">
-                        <i class="fas fa-cog"></i>
-                        <span class="menu-text">Настройки</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="content-wrapper">
-            <div class="container">
-                <h2>Добро пожаловать!</h2>
-                <p>Выберите раздел в меню слева, чтобы начать работу.</p>
-            </div>
+    <nav class="burger-menu" :class="{ 'open': isMenuOpen }">
+        <ul class="menu-list">
+            <li>
+                <a href="/surveys" :class="{ active: activeMenu === 'surveys' }" @click="setActiveMenu('surveys')">
+                    <i class="fas fa-list"></i>
+                    <span class="menu-text">Анкеты</span>
+                </a>
+            </li>
+            <li>
+                <a href="/settings" :class="{ active: activeMenu === 'settings' }" @click="setActiveMenu('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span class="menu-text">Настройки</span>
+                </a>
+            </li>
+            <li>
+                <a href="/profile" :class="{ active: activeMenu === 'profile' }" @click="setActiveMenu('profile')">
+                    <i class="fas fa-user"></i>
+                    <span class="menu-text">Профиль</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about" :class="{ active: activeMenu === 'about' }" @click="setActiveMenu('about')">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="menu-text">О нас</span>
+                </a>
+            </li>
+            <li>
+                <a href="/logout" :class="{ active: activeMenu === 'logout' }" @click="setActiveMenu('logout')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="menu-text">Выйти</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <h2>Добро пожаловать!</h2>
+            <p>Выберите раздел в меню, чтобы начать работу.</p>
         </div>
     </div>
 

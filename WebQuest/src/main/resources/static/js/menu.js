@@ -3,16 +3,17 @@ const { createApp } = Vue;
 createApp({
     data() {
         return {
-            isCollapsed: false,
-            activeMenu: 'home'
+            isMenuOpen: false,
+            activeMenu: 'surveys'
         };
     },
     methods: {
-        toggleSidebar() {
-            this.isCollapsed = !this.isCollapsed;
+        toggleMenu() {
+            this.isMenuOpen = !this.isMenuOpen;
         },
         setActiveMenu(menu) {
             this.activeMenu = menu;
+            this.isMenuOpen = false;
         }
     }
 }).mount('#app');
