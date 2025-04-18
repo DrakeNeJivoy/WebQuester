@@ -20,6 +20,8 @@ public class AnswerOption {
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
 
+    public Long getId() { return id; }
+
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
