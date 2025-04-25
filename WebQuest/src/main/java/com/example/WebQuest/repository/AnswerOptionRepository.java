@@ -9,6 +9,8 @@ import java.util.List;
 public interface AnswerOptionRepository extends JpaRepository<AnswerOption, Long> {
     List<AnswerOption> findByQuestionId(Long questionId);
 
+    List<AnswerOption> findByQuestionIdAndStatus(Long questionId, int status);
+
     @Transactional // Добавляем аннотацию
     void deleteByQuestionId(Long questionId); // Добавляем метод
 }

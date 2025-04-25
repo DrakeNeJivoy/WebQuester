@@ -5,42 +5,62 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault(); // Предотвращаем стандартную отправку формы
 
         const questions = document.querySelectorAll(".question");
+        console.log("Найдено вопросов:", questions.length);
 
-        // Проверяем, что для каждого вопроса выбран хотя бы один ответ
-        for (let question of questions) {
-            const questionIndex = question.querySelector("h2 span:first-child").textContent;
-            const radioInputs = question.querySelectorAll("input[type='radio']");
-            const checkboxInputs = question.querySelectorAll("input[type='checkbox']");
+        const answersToSend = {};
 
-            if (radioInputs.length > 0) {
-                // Для радиокнопок проверка встроена через required
-                continue;
-            } else if (checkboxInputs.length > 0) {
-                // Для чекбоксов проверяем, что хотя бы один выбран
-                const checked = Array.from(checkboxInputs).some(input => input.checked);
-                if (!checked) {
-                    alert(`Пожалуйста, выберите хотя бы один вариант ответа для вопроса ${questionIndex}`);
-                    return;
+        questions.forEach((question, index) => {
+            console.log("Проверка вопроса:", index + 1, question);
+
+            const questionHeader = question.querySelector("h2");
+            console.log("Заголовок вопроса (h2):", questionHeader);
+
+            let questionIndex = "не определен";
+
+            if (questionHeader && questionHeader.textContent) {
+                const match = questionHeader.textContent.match(/Вопрос\s*(\d+)/);
+                if (match && match[1]) {
+                    questionIndex = match[1];
+                } else {
+                    console.warn("Не удалось извлечь номер вопроса из текста h2:", questionHeader.textContent);
                 }
+            } else {
+                console.warn("Не удалось найти заголовок h2 или его текст для вопроса:", index + 1, question);
             }
-        }
 
-        // Если все проверки пройдены, отправляем форму
+            const radioInputs = question.querySelectorAll("input[type='radio']:checked");
+            const checkboxInputs = question.querySelectorAll("input[type='checkbox']:checked");
+
+            const selectedAnswers = [];
+            radioInputs.forEach(input => selectedAnswers.push(input.value));
+            checkboxInputs.forEach(input => selectedAnswers.push(input.value));
+
+            answersToSend[questionIndex] = selectedAnswers;
+        });
+
+        console.log("Данные для отправки на сервер:", answersToSend); // Логируем данные перед отправкой
+
+        // Отправляем форму асинхронно
         fetch(surveyForm.action, {
             method: "POST",
-            body: new FormData(surveyForm)
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: Object.keys(answersToSend).map(key => {
+                return answersToSend[key].map(value => `answers[${key}][]=${value}`).join('&');
+            }).join('&')
         })
             .then(response => {
                 if (!response.ok) {
                     return response.text().then(err => {
-                        throw new Error(err || "Ошибка при отправке ответов"); // Убрана лишняя скобка
+                        throw new Error(err || "Ошибка при отправке ответов");
                     });
                 }
-                return response.text();
+                return response.text(); // Получаем ответ сервера (сообщение об успехе)
             })
-            .then(data => {
-                alert(data);
-                window.location.href = "/home";
+            .then(message => {
+                console.log("Ответ сервера:", message); // Можно оставить для отладки
+                window.location.href = "/submission-result"; // Перенаправляем на страницу результатов
             })
             .catch(error => {
                 console.error("Ошибка:", error);

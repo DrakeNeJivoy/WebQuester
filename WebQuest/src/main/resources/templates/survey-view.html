@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Анкетирование</title>
     <link rel="stylesheet" th:href="@{/css/survey-view.css}">
-    <!-- Подключаем Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -27,44 +26,40 @@
                         </h2>
                     </div>
                     <div class="answers-container">
-                        <!-- Если есть хотя бы один правильный ответ (status == 2) -->
                         <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}">
-                            <!-- Если только один правильный ответ -->
                             <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() == 1}">
                                 <div class="answer" th:each="answerOption : ${questionAnswerOptions.get(question.id)}">
                                     <label class="answer-label">
-                                        <input 
-                                            type="radio" 
-                                            th:name="'answers[' + ${questionStat.count} + ']'" 
-                                            th:value="${answerOption.id}" 
-                                            required
+                                        <input
+                                                type="radio"
+                                                th:name="'answers[' + ${questionStat.index + 1} + ']'"
+                                                th:value="${answerOption.id}"
+                                                required
                                         >
                                         <span th:text="${answerOption.text}">Вариант ответа</span>
                                     </label>
                                 </div>
                             </div>
-                            <!-- Если несколько правильных ответов -->
                             <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() > 1}">
                                 <div class="answer" th:each="answerOption : ${questionAnswerOptions.get(question.id)}">
                                     <label class="answer-label">
-                                        <input 
-                                            type="checkbox" 
-                                            th:name="'answers[' + ${questionStat.count} + '][]'" 
-                                            th:value="${answerOption.id}"
+                                        <input
+                                                type="checkbox"
+                                                th:name="'answers[' + ${questionStat.index + 1} + '][]'"
+                                                th:value="${answerOption.id}"
                                         >
                                         <span th:text="${answerOption.text}">Вариант ответа</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <!-- Если нет правильных ответов (status == 0) -->
                         <div th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() == 0}">
                             <div class="answer" th:each="answerOption : ${questionAnswerOptions.get(question.id)}">
                                 <label class="answer-label">
-                                    <input 
-                                        type="checkbox" 
-                                        th:name="'answers[' + ${questionStat.count} + '][]'" 
-                                        th:value="${answerOption.id}"
+                                    <input
+                                            type="checkbox"
+                                            th:name="'answers[' + ${questionStat.index + 1} + '][]'"
+                                            th:value="${answerOption.id}"
                                     >
                                     <span th:text="${answerOption.text}">Вариант ответа</span>
                                 </label>
