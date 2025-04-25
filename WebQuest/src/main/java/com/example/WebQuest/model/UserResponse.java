@@ -4,37 +4,29 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "user_responses")
 public class UserResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "survey_id", nullable = false)
     private Survey survey;
 
     @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
     @ManyToMany
-    @JoinTable(
-            name = "user_selected_answers",
-            joinColumns = @JoinColumn(name = "user_response_id"),
-            inverseJoinColumns = @JoinColumn(name = "answer_option_id")
-    )
     private List<AnswerOption> selectedAnswers;
 
-    private boolean isCorrect; // Был ли ответ на вопрос правильным
+    private boolean correct;
 
-    public UserResponse() {
-    }
+    @ManyToOne
+    private SurveySubmission submission; // Новое поле
 
+    // Геттеры и сеттеры
     public Long getId() {
         return id;
     }
@@ -76,10 +68,18 @@ public class UserResponse {
     }
 
     public boolean isCorrect() {
-        return isCorrect;
+        return correct;
     }
 
     public void setCorrect(boolean correct) {
-        isCorrect = correct;
+        this.correct = correct;
+    }
+
+    public SurveySubmission getSubmission() {
+        return submission;
+    }
+
+    public void setSubmission(SurveySubmission submission) {
+        this.submission = submission;
     }
 }

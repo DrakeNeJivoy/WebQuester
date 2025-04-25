@@ -7,6 +7,7 @@ import com.example.WebQuest.repository.QuestionRepository;
 import com.example.WebQuest.repository.SurveyRepository;
 import com.example.WebQuest.repository.UserRepository;
 import com.example.WebQuest.repository.UserResponseRepository;
+import com.example.WebQuest.repository.SurveySubmissionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +24,20 @@ public class SurveyService {
     private final AnswerOptionRepository answerOptionRepository;
     private final UserRepository userRepository;
     private final UserResponseRepository userResponseRepository;
+    private final SurveySubmissionRepository surveySubmissionRepository; // Добавлено
 
     public SurveyService(SurveyRepository surveyRepository,
                          QuestionRepository questionRepository,
                          AnswerOptionRepository answerOptionRepository,
                          UserRepository userRepository,
-                         UserResponseRepository userResponseRepository) {
+                         UserResponseRepository userResponseRepository,
+                         SurveySubmissionRepository surveySubmissionRepository) {
         this.surveyRepository = surveyRepository;
         this.questionRepository = questionRepository;
         this.answerOptionRepository = answerOptionRepository;
         this.userRepository = userRepository;
         this.userResponseRepository = userResponseRepository;
+        this.surveySubmissionRepository = surveySubmissionRepository;
     }
 
     public Survey getSurveyById(Long id) {
@@ -134,40 +138,39 @@ public class SurveyService {
     }
 
     @Transactional
-    public String submitSurvey(Long surveyId, Map<Integer, List<Long>> answers, String userEmail) {
+    public Long submitSurvey(Long surveyId, Map<Integer, List<Long>> answers, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new RuntimeException("Survey not found"));
+
+        // Создаем новую запись о прохождении анкеты
+        SurveySubmission submission = new SurveySubmission(user, survey);
+        surveySubmissionRepository.save(submission);
+
         List<Question> questions = questionRepository.findBySurveyId(surveyId);
 
         for (int i = 1; i <= questions.size(); i++) {
             Question question = questions.get(i - 1);
-            List<Long> selectedAnswerIds = answers.get(i); // Получаем ID выбранных ответов для текущего вопроса
+            List<Long> selectedAnswerIds = answers.get(i);
             List<AnswerOption> selectedAnswers = new ArrayList<>();
             boolean isCurrentQuestionCorrect = false;
 
             if (selectedAnswerIds != null && !selectedAnswerIds.isEmpty()) {
                 selectedAnswers = answerOptionRepository.findAllById(selectedAnswerIds);
-
-                // Проверяем, есть ли правильные ответы для этого вопроса
                 List<AnswerOption> correctAnswers = answerOptionRepository.findByQuestionIdAndStatus(question.getId(), 2);
-
                 if (!correctAnswers.isEmpty()) {
-                    // Если есть правильные ответы, сравниваем выбранные с ними
                     List<Long> correctIds = correctAnswers.stream().map(AnswerOption::getId).collect(Collectors.toList());
                     List<Long> selectedIds = selectedAnswers.stream().map(AnswerOption::getId).collect(Collectors.toList());
                     isCurrentQuestionCorrect = correctIds.equals(selectedIds);
                 } else {
-                    // Если правильных ответов нет, считаем ответ всегда "правильным" (или можно настроить другую логику)
                     isCurrentQuestionCorrect = true;
                 }
             } else {
-                // Если пользователь не выбрал ни одного варианта, считаем ответ неправильным (если есть правильные ответы)
                 if (!answerOptionRepository.findByQuestionIdAndStatus(question.getId(), 2).isEmpty()) {
                     isCurrentQuestionCorrect = false;
                 } else {
-                    isCurrentQuestionCorrect = true; // Если нет правильных ответов, отсутствие выбора можно считать "правильным"
+                    isCurrentQuestionCorrect = true;
                 }
             }
 
@@ -177,9 +180,10 @@ public class SurveyService {
             userResponse.setQuestion(question);
             userResponse.setSelectedAnswers(selectedAnswers);
             userResponse.setCorrect(isCurrentQuestionCorrect);
+            userResponse.setSubmission(submission); // Устанавливаем связь с SurveySubmission
             userResponseRepository.save(userResponse);
         }
 
-        return "Анкета успешно отправлена!";
+        return submission.getId(); // Возвращаем ID созданной SurveySubmission
     }
 }

@@ -3,8 +3,10 @@ package com.example.WebQuest.controller;
 import com.example.WebQuest.model.AnswerOption;
 import com.example.WebQuest.model.Question;
 import com.example.WebQuest.model.Survey;
+import com.example.WebQuest.model.SurveySubmission;
 import com.example.WebQuest.service.QuestionService;
 import com.example.WebQuest.service.SurveyService;
+import com.example.WebQuest.service.SurveySubmissionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,23 +15,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class SurveyViewController {
 
     private final SurveyService surveyService;
     private final QuestionService questionService;
+    private final SurveySubmissionService surveySubmissionService;
 
-    public SurveyViewController(SurveyService surveyService, QuestionService questionService) {
+    public SurveyViewController(SurveyService surveyService, QuestionService questionService, SurveySubmissionService surveySubmissionService) {
         this.surveyService = surveyService;
         this.questionService = questionService;
+        this.surveySubmissionService = surveySubmissionService;
     }
 
     @GetMapping("/survey/{id}")
@@ -71,7 +75,7 @@ public class SurveyViewController {
     }
 
     @PostMapping("/survey/{id}/submit")
-    public String submitSurvey(@PathVariable Long id, HttpServletRequest request, Model model) {
+    public String submitSurvey(@PathVariable Long id, HttpServletRequest request) { // Изменили тип возвращаемого значения на String
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
@@ -105,15 +109,23 @@ public class SurveyViewController {
 
         System.out.println("Все ответы пользователя: " + userAnswers);
 
-        String submissionResult = surveyService.submitSurvey(id, userAnswers, userEmail);
-        // На этом этапе мы просто получаем сообщение об успешной отправке
-        // и не передаем никаких данных для отображения результатов.
-        return "submission-result";
+        Long submissionId = surveyService.submitSurvey(id, userAnswers, userEmail);
+
+        return "redirect:/submission-result/" + submissionId; // Возвращаем URL редиректа
     }
 
-    @GetMapping("/submission-result")
-    public String showSubmissionResult() {
-        System.out.println("Получен GET запрос на /submission-result");
+
+    @GetMapping("/submission-result/{submissionId}")
+    public String showSubmissionResult(@PathVariable Long submissionId, Model model) {
+        System.out.println("Получен GET запрос на /submission-result/" + submissionId);
+        System.out.println("ID отправленной анкеты: " + submissionId);
+        SurveySubmission submission = surveySubmissionService.getSubmissionWithResponses(submissionId); // <--- Убедитесь, что вызывается этот метод
+        if (submission == null) {
+            System.out.println("Не удалось загрузить SurveySubmission с ID: " + submissionId);
+            return "error";
+        }
+        model.addAttribute("submission", submission);
+        System.out.println("Передаю модель в шаблон submission-result: " + submission);
         return "submission-result";
     }
 }

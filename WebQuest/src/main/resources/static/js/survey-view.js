@@ -56,11 +56,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         throw new Error(err || "Ошибка при отправке ответов");
                     });
                 }
-                return response.text(); // Получаем ответ сервера (сообщение об успехе)
+                return response.text(); // Получаем HTML страницы результатов
             })
-            .then(message => {
-                console.log("Ответ сервера:", message); // Можно оставить для отладки
-                window.location.href = "/submission-result"; // Перенаправляем на страницу результатов
+            .then(html => {
+                console.log("HTML от сервера:", html);
+                // Попытка извлечь submissionId из HTML (очень ненадежно)
+                const match = html.match(/<span>(\d+)<\/span>/); // Ищем ID внутри <span>
+                if (match && match[1]) {
+                    const submissionId = match[1];
+                    console.log("Извлеченный ID отправленной анкеты:", submissionId);
+                    window.location.href = `/submission-result/${submissionId}`; // Редирект с извлеченным ID
+                } else {
+                    console.error("Не удалось извлечь ID отправленной анкеты из HTML");
+                    alert("Ошибка: не удалось получить ID результата.");
+                }
             })
             .catch(error => {
                 console.error("Ошибка:", error);
