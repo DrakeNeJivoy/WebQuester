@@ -1,11 +1,58 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Тест</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Результат анкеты</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  
+  <style>
+    .selected-answer {
+      font-weight: bold;
+      color: blue;
+    }
+    .correct-answer {
+      font-weight: bold;
+      color: green;
+    }
+    .incorrect-answer {
+      font-weight: bold;
+      color: red;
+    }
+    .user-choice {
+      font-style: italic;
+    }
+    .question-correct {
+      font-weight: bold;
+      color: green;
+    }
+    .question-incorrect {
+      font-weight: bold;
+      color: red;
+    }
+  </style>
 </head>
 <body>
-<h1>Страница результата</h1>
-<p>ID: <span th:text="${submissionId}"></span></p>
+<h1>Результаты анкеты: <span th:text="${survey.title}"></span></h1>
+
+<div th:each="question : ${questions}">
+  <h2 th:text="${question.text}"></h2>
+  <p th:if="${questionCorrectness.containsKey(question.id) and allAnswerOptions.get(question.id).?[status == 2].size() > 0}"
+     th:class="${questionCorrectness.get(question.id)} ? 'question-correct' : 'question-incorrect'">
+    Ответ на вопрос: <span th:text="${questionCorrectness.get(question.id)} ? 'Правильно' : 'Неправильно'"></span>
+  </p>
+  <ul>
+    <li th:each="option : ${allAnswerOptions.get(question.id)}"
+        th:class="${userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id).contains(option.id)} ? 'user-choice' : ''"
+        th:style="${option.status == 2 and allAnswerOptions.get(question.id).?[status == 2].size() > 0} ? 'font-weight: bold; color: green;' : ''">
+      <span th:text="${option.text}"></span>
+      <span th:if="${option.status == 2 and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="correct-answer"> (Правильный ответ)</span>
+      <span th:if="${userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id).contains(option.id)}" class="selected-answer"> (Вы выбрали)</span>
+      <span th:if="${userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id).contains(option.id) and option.status != 2 and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="incorrect-answer"> (Неправильно)</span>
+    </li>
+  </ul>
+</div>
+
+<a th:href="@{/home}">Вернуться на главную</a>
 </body>
 </html>

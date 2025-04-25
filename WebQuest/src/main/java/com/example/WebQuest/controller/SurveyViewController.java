@@ -4,6 +4,7 @@ import com.example.WebQuest.model.AnswerOption;
 import com.example.WebQuest.model.Question;
 import com.example.WebQuest.model.Survey;
 import com.example.WebQuest.model.SurveySubmission;
+import com.example.WebQuest.model.UserResponse;
 import com.example.WebQuest.service.QuestionService;
 import com.example.WebQuest.service.SurveyService;
 import com.example.WebQuest.service.SurveySubmissionService;
@@ -11,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class SurveyViewController {
@@ -75,15 +74,13 @@ public class SurveyViewController {
     }
 
     @PostMapping("/survey/{id}/submit")
-    public String submitSurvey(@PathVariable Long id, HttpServletRequest request) { // Изменили тип возвращаемого значения на String
+    @ResponseBody
+    public Map<String, Long> submitSurvey(@PathVariable Long id, HttpServletRequest request) {
+        System.out.println("POST /survey/" + id + "/submit");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-
-        System.out.println("Получен POST запрос на /survey/" + id + "/submit");
-        System.out.println("Email пользователя: " + userEmail);
-
+        System.out.println("Пользователь: " + userEmail);
         Map<Integer, List<Long>> userAnswers = new HashMap<>();
-
         for (String paramName : request.getParameterMap().keySet()) {
             if (paramName.startsWith("answers[")) {
                 try {
@@ -100,32 +97,67 @@ public class SurveyViewController {
                         }
                     }
                     userAnswers.put(questionNumber, ids);
-                    System.out.println("Ответы пользователя на вопрос " + questionNumber + ": " + ids);
+                    System.out.println("Контроллер - Ответы пользователя на вопрос " + questionNumber + ": " + ids);
                 } catch (NumberFormatException e) {
-                    System.err.println("Некорректный номер вопроса в параметре: " + paramName);
+                    System.err.println("Контроллер - Некорректный номер вопроса в параметре: " + paramName);
                 }
             }
         }
-
-        System.out.println("Все ответы пользователя: " + userAnswers);
-
+        System.out.println("Контроллер - Все ответы пользователя: " + userAnswers);
         Long submissionId = surveyService.submitSurvey(id, userAnswers, userEmail);
-
-        return "redirect:/submission-result/" + submissionId; // Возвращаем URL редиректа
+        System.out.println("Контроллер - Создана отправка анкеты с ID: " + submissionId);
+        Map<String, Long> response = new HashMap<>();
+        response.put("submissionId", submissionId);
+        return response;
     }
-
 
     @GetMapping("/submission-result/{submissionId}")
     public String showSubmissionResult(@PathVariable Long submissionId, Model model) {
-        System.out.println("Получен GET запрос на /submission-result/" + submissionId);
-        System.out.println("ID отправленной анкеты: " + submissionId);
-        SurveySubmission submission = surveySubmissionService.getSubmissionWithResponses(submissionId); // <--- Убедитесь, что вызывается этот метод
+        System.out.println("GET /submission-result/" + submissionId);
+        System.out.println("Запрошен ID отправки: " + submissionId);
+
+        SurveySubmission submission = surveySubmissionService.getSubmissionWithResponses(submissionId);
         if (submission == null) {
-            System.out.println("Не удалось загрузить SurveySubmission с ID: " + submissionId);
+            System.out.println("SurveySubmission с ID " + submissionId + " не найден!");
             return "error";
         }
+        System.out.println("Найдена SurveySubmission: " + submission);
+
+        Survey survey = surveyService.getSurveyById(submission.getSurvey().getId());
+        List<Question> questions = questionService.getQuestionsBySurveyId(survey.getId());
+        Map<Long, List<AnswerOption>> allAnswerOptions = new HashMap<>();
+        Map<Long, List<Long>> userSelectedAnswerIds = new HashMap<>();
+        Map<Long, Boolean> questionCorrectness = new HashMap<>(); // Вопрос ID -> Правильно ли ответил пользователь
+
+        for (Question question : questions) {
+            List<AnswerOption> options = questionService.getAnswerOptionsByQuestionId(question.getId());
+            allAnswerOptions.put(question.getId(), options);
+
+            List<UserResponse> responsesForQuestion = submission.getResponses().stream()
+                    .filter(response -> response.getQuestion().getId().equals(question.getId()))
+                    .collect(Collectors.toList());
+
+            List<Long> selectedIdsForQuestion = responsesForQuestion.stream()
+                    .flatMap(response -> response.getSelectedAnswers().stream().map(AnswerOption::getId))
+                    .collect(Collectors.toList());
+            userSelectedAnswerIds.put(question.getId(), selectedIdsForQuestion);
+            System.out.println("Вопрос ID: " + question.getId() + ", Выбранные ответы ID: " + selectedIdsForQuestion);
+
+            // Определяем, был ли ответ на вопрос правильным
+            boolean correctForQuestion = responsesForQuestion.stream()
+                    .anyMatch(UserResponse::isCorrect);
+            questionCorrectness.put(question.getId(), correctForQuestion);
+            System.out.println("Вопрос ID: " + question.getId() + ", Правильно ответил: " + correctForQuestion);
+        }
+
         model.addAttribute("submission", submission);
-        System.out.println("Передаю модель в шаблон submission-result: " + submission);
+        model.addAttribute("survey", survey);
+        model.addAttribute("questions", questions);
+        model.addAttribute("allAnswerOptions", allAnswerOptions);
+        model.addAttribute("userSelectedAnswerIds", userSelectedAnswerIds);
+        model.addAttribute("questionCorrectness", questionCorrectness); // Передаем правильность ответа
+
+        System.out.println("Передаю модель для /submission-result/" + submissionId);
         return "submission-result";
     }
 }

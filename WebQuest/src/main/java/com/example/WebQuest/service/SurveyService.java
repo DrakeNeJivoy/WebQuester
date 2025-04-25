@@ -147,30 +147,39 @@ public class SurveyService {
         // Создаем новую запись о прохождении анкеты
         SurveySubmission submission = new SurveySubmission(user, survey);
         surveySubmissionRepository.save(submission);
+        System.out.println("Создана SurveySubmission с ID: " + submission.getId());
 
         List<Question> questions = questionRepository.findBySurveyId(surveyId);
 
         for (int i = 1; i <= questions.size(); i++) {
             Question question = questions.get(i - 1);
+            System.out.println("Обработка вопроса №" + i + " (ID: " + question.getId() + "): " + question.getText());
             List<Long> selectedAnswerIds = answers.get(i);
             List<AnswerOption> selectedAnswers = new ArrayList<>();
             boolean isCurrentQuestionCorrect = false;
 
+            System.out.println("Выбранные ответы пользователя (ID): " + selectedAnswerIds);
+
             if (selectedAnswerIds != null && !selectedAnswerIds.isEmpty()) {
                 selectedAnswers = answerOptionRepository.findAllById(selectedAnswerIds);
                 List<AnswerOption> correctAnswers = answerOptionRepository.findByQuestionIdAndStatus(question.getId(), 2);
+                System.out.println("Правильные ответы для вопроса (текст): " + correctAnswers.stream().map(AnswerOption::getText).collect(Collectors.toList()));
                 if (!correctAnswers.isEmpty()) {
                     List<Long> correctIds = correctAnswers.stream().map(AnswerOption::getId).collect(Collectors.toList());
                     List<Long> selectedIds = selectedAnswers.stream().map(AnswerOption::getId).collect(Collectors.toList());
                     isCurrentQuestionCorrect = correctIds.equals(selectedIds);
+                    System.out.println("Сравнение ID правильных ответов (" + correctIds + ") с выбранными (" + selectedIds + "): " + isCurrentQuestionCorrect);
                 } else {
-                    isCurrentQuestionCorrect = true;
+                    isCurrentQuestionCorrect = true; // Если нет правильных ответов, считаем правильным (спорно, но как есть)
+                    System.out.println("Для вопроса нет правильных ответов, установлено isCurrentQuestionCorrect = true");
                 }
             } else {
                 if (!answerOptionRepository.findByQuestionIdAndStatus(question.getId(), 2).isEmpty()) {
-                    isCurrentQuestionCorrect = false;
+                    isCurrentQuestionCorrect = false; // Если ничего не выбрано, а правильные ответы есть - неправильно
+                    System.out.println("Пользователь не выбрал ответ, но есть правильные ответы, установлено isCurrentQuestionCorrect = false");
                 } else {
-                    isCurrentQuestionCorrect = true;
+                    isCurrentQuestionCorrect = true; // Если ничего не выбрано и нет правильных ответов - правильно (спорно)
+                    System.out.println("Пользователь не выбрал ответ и нет правильных ответов, установлено isCurrentQuestionCorrect = true");
                 }
             }
 
@@ -182,6 +191,7 @@ public class SurveyService {
             userResponse.setCorrect(isCurrentQuestionCorrect);
             userResponse.setSubmission(submission); // Устанавливаем связь с SurveySubmission
             userResponseRepository.save(userResponse);
+            System.out.println("Сохранен UserResponse для вопроса " + question.getId() + ", Correct = " + isCurrentQuestionCorrect);
         }
 
         return submission.getId(); // Возвращаем ID созданной SurveySubmission
