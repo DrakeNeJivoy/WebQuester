@@ -80,6 +80,11 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item" th:href="@{'/admin/survey/stats/' + ${survey.id}}">
+                                            <i class="fas fa-chart-bar"></i> Статистика
+                                        </a>
+                                    </li>
+                                    <li>
                                         <form th:action="@{'/surveys/survey/delete/' + ${survey.id}}" method="post" style="display: none;" th:id="'delete-form-' + ${survey.id}">
                                         </form>
                                         <a class="dropdown-item delete-link" href="#" th:data-form-id="'delete-form-' + ${survey.id}">

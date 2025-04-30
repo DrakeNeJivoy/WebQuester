@@ -5,8 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль</title>
     <link rel="stylesheet" th:href="@{/css/profile.css}">
-    <!-- Подключаем Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .submission-list-container {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .submission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .submission-item:last-child {
+            border-bottom: none;
+        }
+        .submission-info span {
+            margin-right: 15px;
+        }
+        .submission-actions a {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .submission-actions a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <header class="header">
@@ -31,6 +63,21 @@
                     <i class="fas fa-sign-out-alt"></i> Выйти
                 </a>
             </div>
+        </div>
+
+        <div class="submission-list-container" th:if="${not #lists.isEmpty(submissions)}">
+            <h2>Ваши отправленные анкеты</h2>
+            <div class="submission-item" th:each="submission : ${submissions}">
+                <div class="submission-info">
+                    <span>Анкета ID: <span th:text="${submission.survey.id}"></span></span>
+                </div>
+                <div class="submission-actions">
+                    <a th:href="@{'/submission-result/' + ${submission.id}}">Просмотреть результат</a>
+                </div>
+            </div>
+        </div>
+        <div class="submission-list-container" th:if="${#lists.isEmpty(submissions)}">
+            <p>Вы еще не отправляли анкет.</p>
         </div>
     </div>
 </div>
