@@ -9,8 +9,8 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-<div id="app" 
-     data-questions="${questions}" 
+<div id="app"
+     data-questions="${questions}"
      data-question-correctness="${questionCorrectness}">
     <header class="header">
         <button class="burger-btn" @click="toggleMenu">
@@ -56,10 +56,9 @@
 
     <div class="content-wrapper">
         <div class="container">
-            <!-- Новый блок для отображения процента правильных ответов -->
             <div class="summary-card" id="summaryCard">
                 <h3>Общий результат</h3>
-                <p>Процент правильных ответов: <span id="percentageDisplay">{{ percentageCorrect }}%</span></p>
+                <p>Процент правильных ответов: <span id="percentageDisplay" th:text="${percentageCorrect} + '%'">{{ percentageCorrect }}%</span></p>
             </div>
 
             <div th:each="question : ${questions}" class="question-card">
@@ -79,9 +78,9 @@
                             <i th:if="${userSelectedAnswerIds != null and userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id) != null and option != null and userSelectedAnswerIds.get(question.id).contains(option.id) and option.status != 2 and allAnswerOptions != null and allAnswerOptions.get(question.id) != null and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="fas fa-times incorrect-icon"></i>
                             <span th:text="${option?.text ?: 'Вариант ответа не указан'}"></span>
                         </span>
-                        <span th:if="${option != null and option.status == 2 and allAnswerOptions != null and allAnswerOptions.get(question.id) != null and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="correct-answer"> (Правильный ответ)</span>
-                        <span th:if="${userSelectedAnswerIds != null and userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id) != null and option != null and userSelectedAnswerIds.get(question.id).contains(option.id)}" class="selected-answer"> (Вы выбрали)</span>
-                        <span th:if="${userSelectedAnswerIds != null and userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id) != null and option != null and userSelectedAnswerIds.get(question.id).contains(option.id) and option.status != 2 and allAnswerOptions != null and allAnswerOptions.get(question.id) != null and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="incorrect-answer"> (Неправильно)</span>
+                        <span th:if="${option != null and option.status == 2 and allAnswerOptions != null and allAnswerOptions.get(question.id) != null and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="correct-answer"> </span>
+                        <span th:if="${userSelectedAnswerIds != null and userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id) != null and option != null and userSelectedAnswerIds.get(question.id).contains(option.id)}" class="selected-answer"> </span>
+                        <span th:if="${userSelectedAnswerIds != null and userSelectedAnswerIds.containsKey(question.id) and userSelectedAnswerIds.get(question.id) != null and option != null and userSelectedAnswerIds.get(question.id).contains(option.id) and option.status != 2 and allAnswerOptions != null and allAnswerOptions.get(question.id) != null and allAnswerOptions.get(question.id).?[status == 2].size() > 0}" class="incorrect-answer"> </span>
                     </li>
                 </ul>
             </div>

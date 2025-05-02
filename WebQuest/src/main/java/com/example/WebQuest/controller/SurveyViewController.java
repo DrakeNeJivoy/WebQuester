@@ -126,28 +126,48 @@ public class SurveyViewController {
         Survey survey = surveyService.getSurveyById(submission.getSurvey().getId());
         List<Question> questions = questionService.getQuestionsBySurveyId(survey.getId());
         Map<Long, List<AnswerOption>> allAnswerOptions = new HashMap<>();
+        Map<Long, Boolean> questionCorrectness = new HashMap<>();
         Map<Long, List<Long>> userSelectedAnswerIds = new HashMap<>();
-        Map<Long, Boolean> questionCorrectness = new HashMap<>(); // Вопрос ID -> Правильно ли ответил пользователь
+        int correctAnswersCount = 0;
+        int questionsWithCorrectAnswer = 0;
 
         for (Question question : questions) {
             List<AnswerOption> options = questionService.getAnswerOptionsByQuestionId(question.getId());
             allAnswerOptions.put(question.getId(), options);
 
-            List<UserResponse> responsesForQuestion = submission.getResponses().stream()
-                    .filter(response -> response.getQuestion().getId().equals(question.getId()))
+            List<AnswerOption> correctOptionsForQuestion = options.stream()
+                    .filter(option -> option.getStatus() == 2) // Используем status == 2
                     .collect(Collectors.toList());
 
-            List<Long> selectedIdsForQuestion = responsesForQuestion.stream()
-                    .flatMap(response -> response.getSelectedAnswers().stream().map(AnswerOption::getId))
-                    .collect(Collectors.toList());
-            userSelectedAnswerIds.put(question.getId(), selectedIdsForQuestion);
-            System.out.println("Вопрос ID: " + question.getId() + ", Выбранные ответы ID: " + selectedIdsForQuestion);
+            if (!correctOptionsForQuestion.isEmpty()) {
+                questionsWithCorrectAnswer++;
 
-            // Определяем, был ли ответ на вопрос правильным
-            boolean correctForQuestion = responsesForQuestion.stream()
-                    .anyMatch(UserResponse::isCorrect);
-            questionCorrectness.put(question.getId(), correctForQuestion);
-            System.out.println("Вопрос ID: " + question.getId() + ", Правильно ответил: " + correctForQuestion);
+                List<UserResponse> responsesForQuestion = submission.getResponses().stream()
+                        .filter(response -> response.getQuestion().getId().equals(question.getId()))
+                        .collect(Collectors.toList());
+
+                List<Long> selectedIdsForQuestion = responsesForQuestion.stream()
+                        .flatMap(response -> response.getSelectedAnswers().stream().map(AnswerOption::getId))
+                        .collect(Collectors.toList());
+                userSelectedAnswerIds.put(question.getId(), selectedIdsForQuestion);
+                System.out.println("Вопрос ID: " + question.getId() + ", Выбранные ответы ID: " + selectedIdsForQuestion);
+
+                // Определяем, был ли ответ на вопрос правильным
+                boolean correctForQuestion = questionService.isCorrectlyAnswered(question, selectedIdsForQuestion);
+                questionCorrectness.put(question.getId(), correctForQuestion);
+                System.out.println("Вопрос ID: " + question.getId() + ", Правильно ответил: " + correctForQuestion);
+                if (correctForQuestion) {
+                    correctAnswersCount++;
+                }
+            } else {
+                // Если у вопроса нет правильного ответа, мы не учитываем его в расчете процента
+                questionCorrectness.put(question.getId(), null); // Или другое значение, чтобы отметить, что вопрос не оценивается
+            }
+        }
+
+        double percentageCorrect = 0;
+        if (questionsWithCorrectAnswer > 0) {
+            percentageCorrect = (double) correctAnswersCount / questionsWithCorrectAnswer * 100;
         }
 
         model.addAttribute("submission", submission);
@@ -155,7 +175,8 @@ public class SurveyViewController {
         model.addAttribute("questions", questions);
         model.addAttribute("allAnswerOptions", allAnswerOptions);
         model.addAttribute("userSelectedAnswerIds", userSelectedAnswerIds);
-        model.addAttribute("questionCorrectness", questionCorrectness); // Передаем правильность ответа
+        model.addAttribute("questionCorrectness", questionCorrectness);
+        model.addAttribute("percentageCorrect", String.format("%.2f", percentageCorrect)); // Передаем процент
 
         System.out.println("Передаю модель для /submission-result/" + submissionId);
         return "submission-result";

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -43,7 +44,6 @@ public class QuestionService {
         }
     }
 
-    // Новый метод для получения списка вопросов по ID анкеты
     public List<Question> getQuestionsBySurveyId(Long surveyId) {
         return questionRepository.findBySurveyId(surveyId);
     }
@@ -52,5 +52,13 @@ public class QuestionService {
         return answerOptionRepository.findByQuestionId(questionId);
     }
 
+    public Question getQuestionById(Long id) {
+        return questionRepository.findById(id).orElse(null);
+    }
 
+    public boolean isCorrectlyAnswered(Question question, List<Long> selectedAnswerIds) {
+        List<AnswerOption> correctAnswers = answerOptionRepository.findByQuestionIdAndStatus(question.getId(), 2);
+        List<Long> correctIds = correctAnswers.stream().map(AnswerOption::getId).collect(Collectors.toList());
+        return correctIds.equals(selectedAnswerIds);
+    }
 }
