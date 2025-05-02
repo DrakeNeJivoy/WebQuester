@@ -5,7 +5,7 @@ const app = createApp({
     data() {
         return {
             isMenuOpen: false,
-            activeMenu: 'surveys',
+            activeMenu: 'settings',
             theme: localStorage.getItem('theme') || 'light',
             language: localStorage.getItem('language') || 'ru'
         };
@@ -17,6 +17,14 @@ const app = createApp({
         setActiveMenu(menu) {
             this.activeMenu = menu;
             this.isMenuOpen = false;
+        },
+        setTheme(theme) {
+            this.theme = theme;
+            localStorage.setItem('theme', theme);
+        },
+        setLanguage() {
+            localStorage.setItem('language', this.language);
+            this.$forceUpdate(); // Принудительно обновляем рендеринг
         }
     },
     computed: {

@@ -1,7 +1,6 @@
 body, html {
     height: 100%;
     margin: 0;
-    padding: 0; /* Убедимся, что нет лишних отступов */
     background-color: #F5F7FA;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
@@ -59,7 +58,7 @@ body, html {
 }
 
 .burger-menu.open {
-    left: 0; /* Убираем щель */
+    left: 0;
 }
 
 .menu-list {
@@ -137,8 +136,6 @@ footer {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    margin-left: 0; /* Убедимся, что контент не смещается из-за меню */
-    transition: none; /* Убираем transition, чтобы избежать смещения */
 }
 
 .container {
@@ -146,137 +143,107 @@ footer {
     max-width: 800px;
     padding: 20px;
     margin: 20px 0;
-    box-sizing: border-box;
 }
 
-.profile-card {
+.question-card {
     background-color: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
-.profile-header i {
-    font-size: 48px;
-    color: #4DA8DA;
-    margin-bottom: 10px;
+.question-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 15px 0;
 }
 
-.profile-header h2 {
-    font-size: 24px;
-    color: #333;
+.question-card p {
+    font-size: 16px;
+    margin: 0 0 15px 0;
+}
+
+.question-correct {
+    color: #28A745;
+    font-weight: bold;
+}
+
+.question-incorrect {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.question-card ul {
+    list-style: none;
+    padding: 0;
     margin: 0;
 }
 
-.profile-header strong {
+.question-card li {
+    font-size: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.question-card li:last-child {
+    border-bottom: none;
+}
+
+.user-choice {
+    background-color: #f1f1f1;
+}
+
+.correct-answer {
+    color: #28A745;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.selected-answer {
     color: #4DA8DA;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
-.profile-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+.incorrect-answer {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
-.action-btn {
-    text-decoration: none;
-    display: flex;
+.correct-icon {
+    color: #28A745;
+    margin-right: 8px;
+}
+
+.selected-icon {
+    color: #4DA8DA;
+    margin-right: 8px;
+}
+
+.incorrect-icon {
+    color: #dc3545;
+    margin-right: 8px;
+}
+
+.back-button {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
+    background-color: #4DA8DA;
+    color: white;
+    text-decoration: none;
     border-radius: 6px;
     font-size: 16px;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
+    margin-top: 20px;
 }
 
-.home-btn {
-    background-color: #4DA8DA;
-    color: white;
-    border: none;
-}
-
-.home-btn:hover {
+.back-button:hover {
     background-color: #3998C7;
-    transform: scale(1.05);
-}
-
-.logout-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-}
-
-.logout-btn:hover {
-    background-color: #c82333;
-    transform: scale(1.05);
-}
-
-.submission-list-container {
-    margin-top: 30px;
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-.submission-list-container h2 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.submission-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.submission-item {
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.submission-item span {
-    font-size: 16px;
-    color: #333;
-}
-
-.submission-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-pass {
-    background-color: #28A745;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: background-color 0.3s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.btn-pass:hover {
-    background-color: #218838;
     transform: scale(1.05);
 }
 
@@ -304,36 +271,59 @@ footer {
         padding: 15px;
     }
 
-    .profile-card {
+    .question-card {
         padding: 15px;
     }
 
-    .profile-header h2 {
-        font-size: 20px;
+    .question-card h3 {
+        font-size: 18px;
     }
 
-    .action-btn {
+    .question-card p {
+        font-size: 14px;
+    }
+
+    .question-card li {
+        font-size: 14px;
+        padding: 8px 0;
+    }
+
+    .back-button {
         font-size: 14px;
         padding: 10px 15px;
     }
+}
+.summary-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-    .submission-list-container h2 {
-        font-size: 20px;
+.summary-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.summary-card p {
+    font-size: 16px;
+    color: #28A745; /* Зеленый цвет для акцента */
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .summary-card {
+        padding: 15px;
     }
 
-    .submission-item {
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
+    .summary-card h3 {
+        font-size: 18px;
     }
 
-    .submission-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .btn-pass {
-        font-size: 12px;
-        padding: 6px 10px;
+    .summary-card p {
+        font-size: 14px;
     }
 }

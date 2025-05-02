@@ -1,10 +1,18 @@
 body, html {
     height: 100%;
     margin: 0;
-    padding: 0; /* Убедимся, что нет лишних отступов */
-    background-color: #F5F7FA;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
+}
+
+.light {
+    background-color: #F5F7FA;
+    color: #333;
+}
+
+.dark {
+    background-color: #1A2526;
+    color: #E0E6E6;
 }
 
 .header {
@@ -20,6 +28,10 @@ body, html {
     display: flex;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark .header {
+    background-color: #2B8ABF;
 }
 
 .header h1 {
@@ -58,8 +70,12 @@ body, html {
     border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.dark .burger-menu {
+    background: linear-gradient(135deg, #2B8ABF 0%, #1A6A9A 100%);
+}
+
 .burger-menu.open {
-    left: 0; /* Убираем щель */
+    left: 0;
 }
 
 .menu-list {
@@ -129,155 +145,127 @@ footer {
     z-index: 1000;
 }
 
+.dark footer {
+    background-color: #2B8ABF;
+}
+
 .content-wrapper {
     padding-top: 80px;
     padding-bottom: 60px;
     min-height: calc(100vh - 120px);
-    overflow-y: auto;
-    box-sizing: border-box;
     display: flex;
     justify-content: center;
-    margin-left: 0; /* Убедимся, что контент не смещается из-за меню */
-    transition: none; /* Убираем transition, чтобы избежать смещения */
 }
 
 .container {
     width: 100%;
     max-width: 800px;
     padding: 20px;
-    margin: 20px 0;
-    box-sizing: border-box;
-}
-
-.profile-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
     text-align: center;
 }
 
-.profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.profile-header i {
-    font-size: 48px;
-    color: #4DA8DA;
-    margin-bottom: 10px;
-}
-
-.profile-header h2 {
+.container h2 {
     font-size: 24px;
-    color: #333;
-    margin: 0;
-}
-
-.profile-header strong {
-    color: #4DA8DA;
-}
-
-.profile-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.action-btn {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 16px;
     font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.home-btn {
-    background-color: #4DA8DA;
-    color: white;
-    border: none;
-}
-
-.home-btn:hover {
-    background-color: #3998C7;
-    transform: scale(1.05);
-}
-
-.logout-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-}
-
-.logout-btn:hover {
-    background-color: #c82333;
-    transform: scale(1.05);
-}
-
-.submission-list-container {
-    margin-top: 30px;
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-.submission-list-container h2 {
-    font-size: 24px;
-    color: #333;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-.submission-list {
+.dark .container h2 {
+    color: #E0E6E6;
+}
+
+.settings-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    align-items: center;
 }
 
-.submission-item {
-    background-color: white;
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
     padding: 15px;
+    background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.submission-item span {
+.dark .setting-item {
+    background-color: #2A3A3B;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.setting-item label {
     font-size: 16px;
-    color: #333;
+    font-weight: 500;
+    flex: 1;
+    text-align: left;
 }
 
-.submission-actions {
+.dark .setting-item label {
+    color: #E0E6E6;
+}
+
+.theme-toggle {
     display: flex;
-    align-items: center;
     gap: 10px;
 }
 
-.btn-pass {
-    background-color: #28A745;
-    color: white;
-    padding: 8px 15px;
+.theme-toggle span {
+    padding: 8px 16px;
     border-radius: 6px;
-    text-decoration: none;
+    background-color: #E9ECEF;
+    cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
 }
 
-.btn-pass:hover {
-    background-color: #218838;
+.dark .theme-toggle span {
+    background-color: #3B4A4B;
+    color: #E0E6E6;
+}
+
+.theme-toggle span.active {
+    background-color: #28A745;
+    color: white;
     transform: scale(1.05);
+}
+
+.theme-toggle span:hover {
+    background-color: #D1D5DB;
+    transform: scale(1.05);
+}
+
+.dark .theme-toggle span:hover {
+    background-color: #4A5A5B;
+}
+
+.setting-item select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #CED4DA;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.dark .setting-item select {
+    background-color: #3B4A4B;
+    border-color: #4A5A5B;
+    color: #E0E6E6;
+}
+
+.setting-item select:hover {
+    border-color: #4DA8DA;
+}
+
+.dark .setting-item select:hover {
+    border-color: #2B8ABF;
 }
 
 @media (max-width: 768px) {
@@ -304,36 +292,24 @@ footer {
         padding: 15px;
     }
 
-    .profile-card {
-        padding: 15px;
-    }
-
-    .profile-header h2 {
-        font-size: 20px;
-    }
-
-    .action-btn {
-        font-size: 14px;
-        padding: 10px 15px;
-    }
-
-    .submission-list-container h2 {
-        font-size: 20px;
-    }
-
-    .submission-item {
+    .setting-item {
         flex-direction: column;
-        gap: 10px;
         align-items: flex-start;
+        gap: 10px;
+        padding: 10px;
     }
 
-    .submission-actions {
+    .setting-item label {
+        text-align: center;
         width: 100%;
-        justify-content: space-between;
     }
 
-    .btn-pass {
-        font-size: 12px;
-        padding: 6px 10px;
+    .theme-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .setting-item select {
+        width: 100%;
     }
 }

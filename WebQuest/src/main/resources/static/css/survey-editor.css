@@ -1,9 +1,18 @@
 body, html {
     height: 100%;
     margin: 0;
-    background-color: #F5F7FA;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
+}
+
+.light {
+    background-color: #F5F7FA;
+    color: #333;
+}
+
+.dark {
+    background-color: #1A2526;
+    color: #E0E6E6;
 }
 
 .header {
@@ -22,10 +31,18 @@ body, html {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.dark .header {
+    background-color: #2B8ABF;
+}
+
 .header h1 {
     margin: 0;
     font-size: 20px;
     font-weight: bold;
+}
+
+.dark .header h1 {
+    color: #E0E6E6;
 }
 
 .back-link {
@@ -52,6 +69,15 @@ body, html {
     color: #4DA8DA;
 }
 
+.dark .back-link {
+    border-color: #E0E6E6;
+}
+
+.dark .back-link:hover {
+    background-color: #E0E6E6;
+    color: #2B8ABF;
+}
+
 footer {
     width: 100%;
     background-color: #4DA8DA;
@@ -63,6 +89,10 @@ footer {
     bottom: 0;
     left: 0;
     z-index: 1000;
+}
+
+.dark footer {
+    background-color: #2B8ABF;
 }
 
 .content-wrapper {
@@ -89,6 +119,11 @@ footer {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.dark #survey-form {
+    background-color: #2A3A3B;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -103,6 +138,10 @@ footer {
     margin-bottom: 8px;
 }
 
+.dark .form-group label {
+    color: #E0E6E6;
+}
+
 .form-group input[type="text"] {
     width: 100%;
     padding: 10px;
@@ -112,9 +151,19 @@ footer {
     transition: border-color 0.3s;
 }
 
+.dark .form-group input[type="text"] {
+    background-color: #3B4A4B;
+    border-color: #4A5A5B;
+    color: #E0E6E6;
+}
+
 .form-group input[type="text"]:focus {
     border-color: #4DA8DA;
     outline: none;
+}
+
+.dark .form-group input[type="text"]:focus {
+    border-color: #2B8ABF;
 }
 
 .questions-section h2 {
@@ -123,6 +172,10 @@ footer {
     color: #333;
     font-size: 24px;
     font-weight: 600;
+}
+
+.dark .questions-section h2 {
+    color: #E0E6E6;
 }
 
 #questions-container {
@@ -135,6 +188,11 @@ footer {
     border-radius: 8px;
     margin-bottom: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.dark .question {
+    background-color: #3B4A4B;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .question-header {
@@ -151,6 +209,10 @@ footer {
     font-size: 16px;
     font-weight: 600;
     color: #333;
+}
+
+.dark .question-header label {
+    color: #E0E6E6;
 }
 
 .delete-question {
@@ -176,9 +238,19 @@ footer {
     transition: border-color 0.3s;
 }
 
+.dark .question input[type="text"] {
+    background-color: #3B4A4B;
+    border-color: #4A5A5B;
+    color: #E0E6E6;
+}
+
 .question input[type="text"]:focus {
     border-color: #4DA8DA;
     outline: none;
+}
+
+.dark .question input[type="text"]:focus {
+    border-color: #2B8ABF;
 }
 
 .checkbox-label {
@@ -190,10 +262,19 @@ footer {
     margin-bottom: 10px;
 }
 
+.dark .checkbox-label {
+    color: #E0E6E6;
+}
+
 .checkbox-label input[type="checkbox"] {
     width: 16px;
     height: 16px;
     cursor: pointer;
+}
+
+.dark .checkbox-label input[type="checkbox"] {
+    background-color: #3B4A4B;
+    border-color: #4A5A5B;
 }
 
 .answers-container {
@@ -217,15 +298,30 @@ footer {
     transition: border-color 0.3s;
 }
 
+.dark .answer input[type="text"] {
+    background-color: #3B4A4B;
+    border-color: #4A5A5B;
+    color: #E0E6E6;
+}
+
 .answer input[type="text"]:focus {
     border-color: #4DA8DA;
     outline: none;
+}
+
+.dark .answer input[type="text"]:focus {
+    border-color: #2B8ABF;
 }
 
 .answer input[type="checkbox"] {
     width: 16px;
     height: 16px;
     cursor: pointer;
+}
+
+.dark .answer input[type="checkbox"] {
+    background-color: #3B4A4B;
+    border-color: #4A5A5B;
 }
 
 .delete-answer {
@@ -256,9 +352,17 @@ footer {
     margin-top: 10px;
 }
 
+.dark .add-answer {
+    background-color: #2B8ABF;
+}
+
 .add-answer:hover {
     background-color: #3998C7;
     transform: scale(1.05);
+}
+
+.dark .add-answer:hover {
+    background-color: #1A6A9A;
 }
 
 #add-question {
@@ -276,9 +380,17 @@ footer {
     margin-bottom: 20px;
 }
 
+.dark #add-question {
+    background-color: #2B8ABF;
+}
+
 #add-question:hover {
     background-color: #3998C7;
     transform: scale(1.05);
+}
+
+.dark #add-question:hover {
+    background-color: #1A6A9A;
 }
 
 .submit-btn {

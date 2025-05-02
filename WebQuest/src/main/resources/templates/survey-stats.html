@@ -1,79 +1,102 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Статистика анкеты</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-  <style>
-    /* ... (предыдущие стили) ... */
-    .submission-list-container {
-      margin-top: 30px;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .submission-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
-    .submission-item:last-child {
-      border-bottom: none;
-    }
-    .submission-info span {
-      margin-right: 15px;
-    }
-    .submission-actions a {
-      display: inline-block;
-      padding: 8px 12px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 0.9em;
-    }
-    .submission-actions a:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика анкеты</title>
+    <link rel="stylesheet" th:href="@{/css/survey-stats.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-<h1>Статистика анкеты: <span th:text="${survey.title}"></span></h1>
+<div id="app">
+    <header class="header">
+        <button class="burger-btn" @click="toggleMenu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1>Статистика анкеты</h1>
+    </header>
 
-<div class="stats-container">
-  <div class="question-stats" th:each="question : ${questions}">
-    <h2 th:text="${question.text}"></h2>
-    <div class="answer-stats">
-      <div th:each="option : ${questionAnswerOptions.get(question.id)}">
-        <span th:text="${option.text}"></span>:
-        <span th:text="${answerOptionCounts.get(question.id).get(option.id) != null ? answerOptionCounts.get(question.id).get(option.id) : 0}">0</span> раз
-      </div>
+    <nav class="burger-menu" :class="{ 'open': isMenuOpen }">
+        <ul class="menu-list">
+            <li class="menu-item">
+                <a th:href="@{/home}" :class="{ active: activeMenu === 'surveys' }" @click="setActiveMenu('surveys')">
+                    <i class="fas fa-list"></i>
+                    <span class="menu-text">Анкеты</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/settings}" :class="{ active: activeMenu === 'settings' }" @click="setActiveMenu('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span class="menu-text">Настройки</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/profile}" :class="{ active: activeMenu === 'profile' }" @click="setActiveMenu('profile')">
+                    <i class="fas fa-user"></i>
+                    <span class="menu-text">Профиль</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/about}" :class="{ active: activeMenu === 'about' }" @click="setActiveMenu('about')">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="menu-text">О нас</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/logout}" :class="{ active: activeMenu === 'logout' }" @click="setActiveMenu('logout')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="menu-text">Выйти</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <h1>Статистика анкеты: <span th:text="${survey.title}"></span></h1>
+
+            <div class="stats-container">
+                <div class="question-stats" th:each="question : ${questions}">
+                    <h2 th:text="${question.text}"></h2>
+                    <div class="answer-stats">
+                        <div th:each="option : ${questionAnswerOptions.get(question.id)}">
+                            <span th:text="${option.text}"></span>:
+                            <span th:text="${answerOptionCounts.get(question.id).get(option.id) != null ? answerOptionCounts.get(question.id).get(option.id) : 0}">0</span> раз
+                        </div>
+                    </div>
+                    <p class="correct-ratio" th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}">
+                        Соотношение правильных ответов:
+                        <span th:text="${#numbers.formatDecimal(questionCorrectRatio.get(question.id) * 100, 0, 0)} + '%'"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="submission-list-container" th:if="${not #lists.isEmpty(submissions)}">
+                <h2>Отправленные результаты</h2>
+                <div class="submission-item" th:each="submission : ${submissions}">
+                    <div class="submission-info">
+                        <span>Пользователь: <span th:text="${submission.user.username}"></span></span>
+                        <span>ID отправки: <span th:text="${submission.id}"></span></span>
+                    </div>
+                    <div class="submission-actions">
+                        <a th:href="@{'/submission-result/' + ${submission.id}}">Просмотреть результат</a>
+                    </div>
+                </div>
+            </div>
+            <div class="submission-list-container" th:if="${#lists.isEmpty(submissions)}">
+                <p>Нет отправленных результатов для этой анкеты.</p>
+            </div>
+
+            <a th:href="@{/home}" class="back-button">Вернуться на главную</a>
+        </div>
     </div>
-    <p class="correct-ratio" th:if="${questionAnswerOptions.get(question.id).?[status == 2].size() > 0}">
-      Соотношение правильных ответов: <span th:text="${#numbers.formatDecimal(questionCorrectRatio.get(question.id), 0, 2)}"></span>
-    </p>
-  </div>
+
+    <footer>
+        <p>Ису-23</p>
+    </footer>
 </div>
 
-<div class="submission-list-container" th:if="${not #lists.isEmpty(submissions)}">
-  <h2>Отправленные результаты</h2>
-  <div class="submission-item" th:each="submission : ${submissions}">
-    <div class="submission-info">
-      <span>Пользователь: <span th:text="${submission.user.username}"></span></span>
-      <span>ID отправки: <span th:text="${submission.id}"></span></span>
-    </div>
-    <div class="submission-actions">
-      <a th:href="@{'/submission-result/' + ${submission.id}}">Просмотреть результат</a>
-    </div>
-  </div>
-  <div class="submission-list-container" th:if="${#lists.isEmpty(submissions)}">
-    <p>Нет отправленных результатов для этой анкеты.</p>
-  </div>
-</div>
-
-<a th:href="@{/home}">Вернуться на главную</a>
+<script src="/js/survey-stats.js"></script>
 </body>
 </html>
