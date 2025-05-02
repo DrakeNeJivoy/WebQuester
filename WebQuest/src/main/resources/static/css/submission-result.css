@@ -293,3 +293,37 @@ footer {
         padding: 10px 15px;
     }
 }
+.summary-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.summary-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.summary-card p {
+    font-size: 16px;
+    color: #28A745; /* Зеленый цвет для акцента */
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .summary-card {
+        padding: 15px;
+    }
+
+    .summary-card h3 {
+        font-size: 18px;
+    }
+
+    .summary-card p {
+        font-size: 14px;
+    }
+}

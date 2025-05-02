@@ -1,7 +1,6 @@
 body, html {
     height: 100%;
     margin: 0;
-    padding: 0; /* Убедимся, что нет лишних отступов */
     background-color: #F5F7FA;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
@@ -59,7 +58,7 @@ body, html {
 }
 
 .burger-menu.open {
-    left: 0; /* Убираем щель */
+    left: 0;
 }
 
 .menu-list {
@@ -137,8 +136,6 @@ footer {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    margin-left: 0; /* Убедимся, что контент не смещается из-за меню */
-    transition: none; /* Убираем transition, чтобы избежать смещения */
 }
 
 .container {
@@ -146,137 +143,115 @@ footer {
     max-width: 800px;
     padding: 20px;
     margin: 20px 0;
-    box-sizing: border-box;
 }
 
-.profile-card {
+.stats-container {
+    margin-top: 20px;
+}
+
+.question-stats {
     background-color: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
-.profile-header i {
-    font-size: 48px;
-    color: #4DA8DA;
-    margin-bottom: 10px;
-}
-
-.profile-header h2 {
-    font-size: 24px;
+.question-stats h2 {
+    font-size: 20px;
     color: #333;
-    margin: 0;
+    margin: 0 0 15px 0;
 }
 
-.profile-header strong {
-    color: #4DA8DA;
+.answer-stats {
+    margin-bottom: 15px;
 }
 
-.profile-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.action-btn {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
-    border-radius: 6px;
+.answer-stats div {
     font-size: 16px;
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.home-btn {
-    background-color: #4DA8DA;
-    color: white;
-    border: none;
+.answer-stats div:last-child {
+    border-bottom: none;
 }
 
-.home-btn:hover {
-    background-color: #3998C7;
-    transform: scale(1.05);
-}
-
-.logout-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-}
-
-.logout-btn:hover {
-    background-color: #c82333;
-    transform: scale(1.05);
+.correct-ratio {
+    font-size: 16px;
+    color: #28A745;
+    font-weight: bold;
 }
 
 .submission-list-container {
     margin-top: 30px;
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .submission-list-container h2 {
-    font-size: 24px;
+    font-size: 20px;
     color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.submission-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    margin: 0 0 15px 0;
 }
 
 .submission-item {
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.submission-item span {
+.submission-item:last-child {
+    border-bottom: none;
+}
+
+.submission-info span {
     font-size: 16px;
     color: #333;
+    margin-right: 15px;
 }
 
-.submission-actions {
-    display: flex;
+.submission-actions a {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-}
-
-.btn-pass {
-    background-color: #28A745;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: #4DA8DA;
     color: white;
-    padding: 8px 15px;
-    border-radius: 6px;
     text-decoration: none;
+    border-radius: 6px;
     font-size: 14px;
+    font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
 }
 
-.btn-pass:hover {
-    background-color: #218838;
+.submission-actions a:hover {
+    background-color: #3998C7;
+    transform: scale(1.05);
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: #4DA8DA;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #3998C7;
     transform: scale(1.05);
 }
 
@@ -304,36 +279,43 @@ footer {
         padding: 15px;
     }
 
-    .profile-card {
+    .question-stats {
         padding: 15px;
     }
 
-    .profile-header h2 {
-        font-size: 20px;
+    .question-stats h2 {
+        font-size: 18px;
     }
 
-    .action-btn {
+    .answer-stats div {
         font-size: 14px;
-        padding: 10px 15px;
+        padding: 8px 0;
+    }
+
+    .correct-ratio {
+        font-size: 14px;
+    }
+
+    .submission-list-container {
+        padding: 10px;
     }
 
     .submission-list-container h2 {
-        font-size: 20px;
+        font-size: 18px;
     }
 
-    .submission-item {
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
+    .submission-info span {
+        font-size: 14px;
+        margin-right: 10px;
     }
 
-    .submission-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .btn-pass {
+    .submission-actions a {
         font-size: 12px;
         padding: 6px 10px;
+    }
+
+    .back-button {
+        font-size: 14px;
+        padding: 10px 15px;
     }
 }

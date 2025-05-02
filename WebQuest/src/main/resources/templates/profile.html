@@ -6,84 +6,95 @@
     <title>Профиль</title>
     <link rel="stylesheet" th:href="@{/css/profile.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .submission-list-container {
-            margin-top: 30px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .submission-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .submission-item:last-child {
-            border-bottom: none;
-        }
-        .submission-info span {
-            margin-right: 15px;
-        }
-        .submission-actions a {
-            display: inline-block;
-            padding: 8px 12px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 0.9em;
-        }
-        .submission-actions a:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-<header class="header">
-    <a th:href="@{/home}" class="back-link">
-        <i class="fas fa-arrow-left"></i> Назад
-    </a>
-    <h1>Профиль</h1>
-</header>
+<div id="app">
+    <header class="header">
+        <button class="burger-btn" @click="toggleMenu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1>Профиль</h1>
+    </header>
 
-<div class="content-wrapper">
-    <div class="container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <i class="fas fa-user-circle"></i>
-                <h2>Добро пожаловать, <strong th:text="${email}">User</strong>!</h2>
-            </div>
-            <div class="profile-actions">
-                <a th:href="@{/home}" class="action-btn home-btn">
-                    <i class="fas fa-home"></i> На главную
+    <nav class="burger-menu" :class="{ 'open': isMenuOpen }">
+        <ul class="menu-list">
+            <li class="menu-item">
+                <a th:href="@{/home}" :class="{ active: activeMenu === 'surveys' }" @click="setActiveMenu('surveys')">
+                    <i class="fas fa-list"></i>
+                    <span class="menu-text">Анкеты</span>
                 </a>
-                <a th:href="@{/logout}" class="action-btn logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Выйти
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/settings}" :class="{ active: activeMenu === 'settings' }" @click="setActiveMenu('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span class="menu-text">Настройки</span>
                 </a>
-            </div>
-        </div>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/profile}" :class="{ active: activeMenu === 'profile' }" @click="setActiveMenu('profile')">
+                    <i class="fas fa-user"></i>
+                    <span class="menu-text">Профиль</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/about}" :class="{ active: activeMenu === 'about' }" @click="setActiveMenu('about')">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="menu-text">О нас</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a th:href="@{/logout}" :class="{ active: activeMenu === 'logout' }" @click="setActiveMenu('logout')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="menu-text">Выйти</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-        <div class="submission-list-container" th:if="${not #lists.isEmpty(submissions)}">
-            <h2>Ваши отправленные анкеты</h2>
-            <div class="submission-item" th:each="submission : ${submissions}">
-                <div class="submission-info">
-                    <span>Анкета ID: <span th:text="${submission.survey.id}"></span></span>
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <i class="fas fa-user-circle"></i>
+                    <h2>Добро пожаловать, <strong th:text="${email}">User</strong>!</h2>
                 </div>
-                <div class="submission-actions">
-                    <a th:href="@{'/submission-result/' + ${submission.id}}">Просмотреть результат</a>
+                <div class="profile-actions">
+                    <a th:href="@{/home}" class="action-btn home-btn">
+                        <i class="fas fa-home"></i> На главную
+                    </a>
+                    <a th:href="@{/logout}" class="action-btn logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="submission-list-container" th:if="${#lists.isEmpty(submissions)}">
-            <p>Вы еще не отправляли анкет.</p>
+
+            <div class="submission-list-container" th:if="${not #lists.isEmpty(submissions)}">
+                <h2>Ваши отправленные анкеты</h2>
+                <div class="submission-list">
+                    <div class="submission-item" th:each="submission : ${submissions}">
+                        <div class="submission-info">
+                            <span>Анкета ID: <span th:text="${submission.survey.id}"></span></span>
+                        </div>
+                        <div class="submission-actions">
+                            <a th:href="@{'/submission-result/' + ${submission.id}}" class="btn-pass">
+                                <i class="fas fa-eye"></i> Просмотреть
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submission-list-container" th:if="${#lists.isEmpty(submissions)}">
+                <p>Вы еще не отправляли анкет.</p>
+            </div>
         </div>
     </div>
+
+    <footer>
+        <p>Ису-23</p>
+    </footer>
 </div>
 
-<footer>
-    <p>Ису-23</p>
-</footer>
+<script src="/js/profile.js"></script>
 </body>
 </html>
