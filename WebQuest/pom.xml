@@ -107,6 +107,16 @@
 	</dependencies>
 
 	<build>
+		<finalName>WebQuest</finalName> <directory>${project.basedir}/target</directory> <outputDirectory>${project.basedir}/target/classes</outputDirectory> <testOutputDirectory>${project.basedir}/target/test-classes</testOutputDirectory> <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory> <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory> <resources>
+		<resource>
+			<directory>${project.basedir}/src/main/resources</directory>
+		</resource>
+	</resources>
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/src/test/resources</directory>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -131,6 +141,17 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
