@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/surveys")
@@ -36,6 +37,13 @@ public class SurveyController {
     public ResponseEntity<String> deleteSurvey(@PathVariable Long id) {
         surveyService.deleteSurvey(id);
         return ResponseEntity.ok("Survey with ID: " + id + " deleted successfully");
+    }
+
+    @GetMapping("/survey/delete/{id}")
+    public String deleteSurvey(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        surveyService.deleteSurvey(id);
+        redirectAttributes.addFlashAttribute("message", "Анкета успешно удалена!");
+        return "redirect:/home"; // Перенаправляем на /home
     }
 
     @GetMapping("/survey/{id}")
